@@ -1,0 +1,18 @@
+---
+title: "Outiline"
+---
+
+
+ The purpose of this project is create an app that will take the data from my fantasy baseball league to create a weekly roto league. In order to get things started I am using data from the fantasy league of last year.
+
+The first thing I need to build a function that will take 1 week of team stats data and output a scoreboard of the team names and how many roto points they recieved that week.
+
+To build this function I need to..
+
+* Upload the team stats from one week
+
+* Assign 10 points to the team with the best stat in each category, 9 points for the team with the second most, 8 for the team with the third most, and so on and so on. 
+    + Teams who that the same number of stats in one category (i.e. two or more teams have the same number of home runs one week) should all be appointed the average of their total points  
+
+
+* The scoreboard should have a column for team names, Batting roto points, pitching roto points, and total amount of roto points.
