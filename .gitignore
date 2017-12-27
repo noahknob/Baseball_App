@@ -4,6 +4,7 @@
 .Ruserdata
 .Rapp.history
 .DS_Store
+data/auth.json
 analysis/figure
 analysis/*html
 analysis/*_cache

@@ -13,6 +13,18 @@ stopifnot(file.exists("../data/auth.json"))
 authf <- "../data/auth.json"
 auth_dat <- fromJSON(authf)
 
+#3 steps to making a auth.json file
+#1) get consumer_secret and consumer_key from: https://developer.yahoo.com/apps/YWVpEk5c/
+#2) create a list with key and secret x <- list(consumer_secret="MYCONSUMERSECRET",consumer_key="MYCONSUMERKEY)
+#3) create a json string from the list json_txt <- toJSON(x,auto_unbox=T)
+#4) write the json string to a file write(json_txt,"../data/auth.json")
+
+
+# json_txt <- toJSON(,auto_unbox = T)
+
+#You could also do it this way
+
+#3) 
 
 endpoint <- oauth_endpoint("get_request_token", "request_auth", "get_token",
                            base_url = "https://api.login.yahoo.com/oauth2")
