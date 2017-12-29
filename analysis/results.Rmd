@@ -1,0 +1,9 @@
+---
+title: Results
+output: html_document
+---
+
+
+* [Outiline](outline.html)
+* [Weekly Stats](Week_One.html)
+* [Weekly Roto](Weekly_Roto.html)
