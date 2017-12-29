@@ -1,0 +1,72 @@
+---
+title: "Weekly Stats"
+
+output: html_document
+---
+
+Here are the stats from every team of week 1
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+library(tidyverse)
+library(DT)
+all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t")
+```
+
+```{r echo=FALSE}
+regular_season_stats <-all_week_stats%>%
+  filter(week !=22,week!=23,week!=24)
+
+Scoreboard <- regular_season_stats%>%
+  group_by(real_name,week)%>%
+  summarise(ROTO=sum(roto_points))%>%
+  arrange(week)
+
+winners <- Scoreboard %>%
+  group_by(week)%>%
+  filter(ROTO==max(ROTO))
+  
+winner_total <- winners%>%
+  group_by(real_name)%>% summarise(weeks_won = n())%>% arrange(desc(weeks_won))
+  
+week_value<-list()
+
+for (i in 1:21){
+  week<- all_week_stats%>% filter(week==i)%>%select(real_name,stats,stat_value)
+  df <- spread(week,stats,stat_value)
+
+  week_roto <-Scoreboard %>%filter(week==i)%>%select(ROTO,real_name)
+  week_stats <- inner_join(df,week_roto,by="real_name")
+  week_value[[i]] <-week_stats
+}
+
+
+
+```
+
+
+```{r,echo=FALSE}
+datatable(week_value[[1]], caption = "Week 1 Stats")
+datatable(week_value[[2]], caption = "Week 2 Stats")
+datatable(week_value[[3]], caption = "Week 3 Stats")
+datatable(week_value[[4]], caption = "Week 4 Stats")
+datatable(week_value[[5]], caption = "Week 5 Stats")
+datatable(week_value[[6]], caption = "Week 6 Stats")
+datatable(week_value[[7]], caption = "Week 7 Stats")
+datatable(week_value[[8]], caption = "Week 8 Stats")
+datatable(week_value[[9]], caption = "Week 9 Stats")
+datatable(week_value[[10]], caption = "Week 10 Stats")
+datatable(week_value[[11]], caption = "Week 11 Stats")
+datatable(week_value[[12]], caption = "Week 12 Stats")
+datatable(week_value[[13]], caption = "Week 13 Stats")
+datatable(week_value[[14]], caption = "Week 14 Stats")
+datatable(week_value[[15]], caption = "Week 15 Stats")
+datatable(week_value[[16]], caption = "Week 16 Stats")
+datatable(week_value[[17]], caption = "Week 17 Stats")
+datatable(week_value[[18]], caption = "Week 18 Stats")
+datatable(week_value[[19]], caption = "Week 19 Stats")
+datatable(week_value[[20]], caption = "Week 20 Stats")
+datatable(week_value[[21]], caption = "Week 21 Stats")
+
+
+```
+
