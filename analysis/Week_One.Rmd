@@ -1,10 +1,11 @@
 ---
 title: "Weekly Stats"
-
-output: html_document
+output: 
+  html_document:
+    toc: false
 ---
 
-Here are the stats from every team of week 1
+These are the stats from every team each week. With a Roto column added to show how roto points each team recieved. 
 
 ```{r, echo=FALSE,message=FALSE,warning=FALSE}
 library(tidyverse)
