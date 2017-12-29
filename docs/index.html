@@ -220,6 +220,337 @@ div.section {
 <p>The ROTO league is nice because it shows you whose team accumulated the most stats, however it is hard to stay excited for the whole year.</p>
 <p>My Idea is to create a weekly ROTO league where each week the entire league face off. It is the same scoring as ROTO except that after each week the stats reset.</p>
 <p>The stats From Every Week Can be found <a href="Week_One.html">Week_Stats</a></p>
+<p>Here are the winners of each week, I left out weeks 22 through 24 because those were the playoff weeks, and some teams were not paying attention.</p>
+<pre class="r"><code>kable(winners,&quot;html&quot;)</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+real_name
+</th>
+<th style="text-align:right;">
+week
+</th>
+<th style="text-align:right;">
+total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Ryan
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+70.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wyatt
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+77.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordan
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+69.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Edward
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+77.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+81.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+79.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+79.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dan
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+85.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+78.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wyatt
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+77.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordan
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+67.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+72.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ryan
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+79.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Matt
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+71.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordan
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+74.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordan
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+69.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Austin
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+76.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dan
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+72.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Matt
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+72.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wyatt
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+77.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Matt
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+80.5
+</td>
+</tr>
+</tbody>
+</table>
+<p>The total weeks one per Team is</p>
+<pre class="r"><code>kable(winner_total,&quot;html&quot;)</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+real_name
+</th>
+<th style="text-align:right;">
+weeks_won
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordan
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Matt
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wyatt
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dan
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ryan
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Austin
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Edward
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+<p>If name not listed than 0 weeks won.</p>
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
 TeX fonts only; see
