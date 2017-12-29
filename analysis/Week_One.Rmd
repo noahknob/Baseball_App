@@ -47,7 +47,16 @@ for (i in 1:21){
 
 ```{r,echo=FALSE}
 datatable(week_value[[1]], caption = "Week 1 Stats")
+
+```
+
+# Week2
+
+```{r}
 datatable(week_value[[2]], caption = "Week 2 Stats")
+```
+
+
 datatable(week_value[[3]], caption = "Week 3 Stats")
 datatable(week_value[[4]], caption = "Week 4 Stats")
 datatable(week_value[[5]], caption = "Week 5 Stats")
@@ -70,4 +79,6 @@ datatable(week_value[[21]], caption = "Week 21 Stats")
 
 
 ```
+
+
 
