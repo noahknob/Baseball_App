@@ -4,6 +4,23 @@ output:
   html_document:
     toc: false
 ---
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+library(tidyverse)
+library(DT)
+library(knitr)
+library(kableExtra)
+all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t")
+
+Scoreboard <- all_week_stats %>% group_by(real_name,week) %>% summarise(total=sum(roto_points))
+
+Scoreboard <- arrange(Scoreboard,week)
+winners<- Scoreboard %>% group_by(week)%>%filter(total==max(total))%>%filter(week!=22,week!=23,week!=24)
+winner_total <- winners %>% group_by(real_name)%>% summarise(weeks_won = n())%>% arrange(desc(weeks_won))
+
+```
+
+
+
 
 In Yahoo Fantasy Baseball there are two different types of league formats.  Head to Head and ROTO.  In a H2H league you only compete agianst one other manager each week. And in A ROTO league you compete against the whole league for the entire year.
 
@@ -15,3 +32,26 @@ The ROTO league is nice because it shows you whose team accumulated the most sta
 My Idea is to create a weekly ROTO league where each week the entire league face off.  It is the same scoring as ROTO except that after each week the stats reset.  
 
 The stats From Every Week Can be found [Week_Stats](Week_One.html)
+
+
+Here are the winners of each week, I left out weeks 22 through 24 because those were the playoff weeks, and some teams were not paying attention.
+
+```{r}
+kable(winners,"html")
+
+
+
+```
+
+
+
+
+The total weeks one per Team is 
+```{r}
+kable(winner_total,"html")
+```
+
+
+
+If name not listed than 0 weeks won.
+
