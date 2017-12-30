@@ -1,6 +1,6 @@
 #first install the weird version of httr
 devtools::install_github("ctrombley/httr")
-
+library(tidyverse)
 library(httr)
 library(xml2)
 library(jsonlite)
@@ -8,7 +8,7 @@ library(ggplot2)
 library(httpuv)
 
 #make sure that when you type `getwd()`, the current directory is `code`
-#You'll need to get auth.json 
+#You'll need to get auth.json
 stopifnot(file.exists("../data/auth.json"))
 authf <- "../data/auth.json"
 auth_dat <- fromJSON(authf)
@@ -24,7 +24,7 @@ auth_dat <- fromJSON(authf)
 
 #You could also do it this way
 
-#3) 
+#3)
 
 endpoint <- oauth_endpoint("get_request_token", "request_auth", "get_token",
                            base_url = "https://api.login.yahoo.com/oauth2")
@@ -35,7 +35,7 @@ app <- oauth_app("yahoo",
                  redirect_uri = "oob")
 
 token <- oauth2.0_token(endpoint, app, use_oob = TRUE, as_header = TRUE,
-                        use_basic_auth = TRUE, cache = TRUE)
+                        use_basic_auth = TRUE)
 
 config <-  httr::config(token = token)
 
@@ -57,7 +57,7 @@ league.key <- paste0(game.key, ".l.", league.id)
 # league_dat_xml <- read_xml(as.character(league_dat))
 
 pull_team_names <- function(league.key,config){
-  
+
   league_url <- sprintf("https://fantasysports.yahooapis.com/fantasy/v2/league/%s/teams/metadata?format=xml", league.key)
   teams_dat <- GET(league_url,config)
   teams_xml <- read_xml(as.character(teams_dat)) %>% xml_ns_strip()
@@ -74,12 +74,12 @@ pull_stat_categories<- function(config){
   ff_base <- "https://fantasysports.yahooapis.com/fantasy/v2"
   stat_url=paste0(ff_base,"/game/370/stat_categories/?format=xml")
   stat_categories <- read_xml(as.character(GET(stat_url,config))) %>% xml_ns_strip()
-  all_stats <- xml_find_all(stat_categories,"//stat") 
+  all_stats <- xml_find_all(stat_categories,"//stat")
   all_names <- all_stats %>% map_df(~data_frame(
     stat_name=xml_text(xml_find_all(.x,"name")),
     stat_id=xml_text(xml_find_all(.x,"stat_id"))))
   return(all_names)
-} 
+}
 get_team_name <- function(team_key,token){
   ff_base <- "https://fantasysports.yahooapis.com/fantasy/v2"
   metadata_url=paste0(ff_base,"/team/",team_key,"/metadata/?format=xml")
@@ -97,10 +97,45 @@ get_team_week_stats <- function(team_key,week,config){
   return(stat_xml)
 }
 
+team_df <- pull_team_names(league.key,config)
+stat_categories <- pull_stat_categories(config)
+
+team_df <- group_by(team_df,team_key) %>% do(mutate(.,team_name=get_team_name(.$team_key,token)))
+
+#test_team_meta <- read_xml(as.character(GET(team_key_df$metadata_url[1],config(token=token))))
+weeks <- data_frame(week=1:24)
+
+weeks <- weeks %>% mutate(c=1)
+team_df <- team_df %>% mutate(c=1)
+team_df <-inner_join(weeks,team_df,by="c")
+
+all_week_stats <- group_by(team_df,team_key,team_name,week) %>% do(get_team_week_stats(.$team_key,.$week,config))%>%ungroup()
+
+all_week_stats <- inner_join(stat_categories,all_week_stats,by="stat_id")
+all_week_stats <- filter(all_week_stats,stat_name != "Innings Pitched", stat_name != "Hits / At Bats")
+
+all_week_stats <- all_week_stats %>%
+  mutate(stats=ifelse(stat_name=="(Walks + Hits)/ Innings Pitched","WHIP",stat_name))%>%
+  select(-stat_name)
+
+all_week_stats <- all_week_stats %>% mutate(stat_value=as.numeric(stat_value)) %>%
+  group_by(stats,week)%>%
+  mutate(roto_points=ifelse(stats =="WHIP"|stats=="Earned Run Average",rank(-stat_value),rank(stat_value)))
+
+all_week_stats <- all_week_stats %>% select(-team_key) %>% select(-team)
+
+names <-read_delim("/Users/noahknoblauch/Baseball/Team_Names.txt",delim = "\t")
+
+all_week_stats <- inner_join(all_week_stats,names,by="team_name")
+
+write_delim(all_week_stats,"/Users/noahknoblauch/Baseball/all_week_stats.txt",delim = "\t")
 
 
-team_df <- group_by(team_key_df,team_key) %>% do(mutate(.,team_name=get_team_name(.$team_key,token)))
+Scoreboard <- all_week_stats %>% group_by(team_name,week) %>% summarise(total=sum(roto_points))
 
-test_team_meta <- read_xml(as.character(GET(team_key_df$metadata_url[1],config(token=token))))
+Scoreboard <- arrange(Scoreboard,week)
 
 
+
+winners<- Scoreboard %>% group_by(week)%>%filter(total==max(total))
+winner_total <- winners %>% group_by(team_name)%>% summarise(weeks_won = n())%>% arrange(desc(weeks_won))
