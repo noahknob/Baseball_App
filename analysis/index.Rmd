@@ -9,16 +9,19 @@ library(tidyverse)
 library(DT)
 library(knitr)
 library(kableExtra)
+library(htmlTable)
+
 all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t")
 
 Scoreboard <- all_week_stats %>% group_by(real_name,week) %>% summarise(total=sum(roto_points))
 
 Scoreboard <- arrange(Scoreboard,week)
 winners<- Scoreboard %>% group_by(week)%>%filter(total==max(total))%>%filter(week!=22,week!=23,week!=24)
-winner_total <- winners %>% group_by(real_name)%>% summarise(weeks_won = n())%>% arrange(desc(weeks_won))
+winners <- rename(winners,Manager=real_name,Week=week,ROTO=total)
+winner_total <- winners %>% group_by(Manager)%>% summarise(Weeks_Won = n())%>% arrange(desc(Weeks_Won))
+
 
 ```
-
 
 
 
@@ -29,29 +32,37 @@ I like the H2H league because it keeps you excited week in and week out because 
 The ROTO league is nice because it shows you whose team accumulated the most stats, however it is hard to stay excited for the whole year.
 
 
-My Idea is to create a weekly ROTO league where each week the entire league face off.  It is the same scoring as ROTO except that after each week the stats reset.  
+My idea is to create a weekly ROTO league where each week the entire league face off.  It is the same scoring as ROTO except that after each week the stats reset.  
 
-The stats From Every Week Can be found [Week_Stats](Week_One.html)
+The stats from every week can be found here [Week_Stats](Week_One.html)
 
 
 Here are the winners of each week, I left out weeks 22 through 24 because those were the playoff weeks, and some teams were not paying attention.
 
-```{r}
-kable(winners,"html")
 
+
+# Winners
+Here are the winners of each week, I left out weeks 22 through 24 because those were the playoff weeks, and some teams were not paying attention.
+
+```{r,echo=FALSE}
+winners %>% 
+  kable("html") %>%
+  kable_styling(full_width = FALSE)
 
 
 ```
 
 
 
-
-The total weeks one per Team is 
-```{r}
-kable(winner_total,"html")
+# Total Wins
+The total weeks one per Team
+```{r,echo=FALSE}
+winner_total %>% 
+  kable("html") %>%
+  kable_styling(full_width = FALSE)
 ```
 
 
 
-If name not listed than 0 weeks won.
+If name not listed then 0 weeks won.
 
