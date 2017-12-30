@@ -55,7 +55,7 @@ winners %>%
 
 
 # Total Wins
-The total weeks one per Team
+Total weeks won per Team
 ```{r,echo=FALSE}
 winner_total %>% 
   kable("html") %>%
