@@ -9,10 +9,9 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="First Last" />
 
 
-<title>Untitled</title>
+<title>Code</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -309,13 +308,52 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Untitled</h1>
-<h4 class="author"><em>First Last</em></h4>
-<h4 class="date"><em>YYYY-MM-DD</em></h4>
+<h1 class="title toc-ignore">Code</h1>
 
 </div>
 
 
+<p>The most difficult part of this project was gathering all the data from my Yahoo fantasy league. In order to gain acess to the data in my fantasy league I needed to acess Yahoo’s API</p>
+<p>I created a JSON file with my yahoo consumer key and consumer secret</p>
+<pre><code>authf &lt;- &quot;../data/auth.json&quot;
+auth_dat &lt;- fromJSON(authf)
+</code></pre>
+<p>To create the auth.JSON file one must get consumer_secret and consumer_key from: <a href="https://developer.yahoo.com/apps/YWVpEk5c/" class="uri">https://developer.yahoo.com/apps/YWVpEk5c/</a></p>
+<p>Then create a list with the key and secret, convert the list to JSON string and write that JSON string as a file</p>
+<pre><code>x &lt;- list(consumer_secret=&quot;MYCONSUMERSECRET&quot;,consumer_key=&quot;MYCONSUMERKEY)
+json_txt &lt;- toJSON(x,auto_unbox=T)
+write(json_txt,&quot;../data/auth.json&quot;)
+</code></pre>
+<p>Yahoo’s API uses the Oauth protocol. Oauth allows users to share their yahoo informaton without having to give out their Username and password.</p>
+<pre><code>endpoint &lt;- oauth_endpoint(&quot;get_request_token&quot;, &quot;request_auth&quot;, &quot;get_token&quot;,
+                           base_url = &quot;https://api.login.yahoo.com/oauth2&quot;)
+app &lt;- oauth_app(&quot;yahoo&quot;,
+                 key = auth_dat[&quot;consumer_key&quot;],
+                 secret = auth_dat[&quot;consumer_secret&quot;],
+                 redirect_uri = &quot;oob&quot;)
+
+token &lt;- oauth2.0_token(endpoint, app, use_oob = TRUE, as_header = TRUE,
+                        use_basic_auth = TRUE)
+
+config &lt;-  httr::config(token = token)
+</code></pre>
+<pre><code>ff_base &lt;- &quot;https://fantasysports.yahooapis.com/fantasy/v2&quot;
+ff.url &lt;- paste0(ff_base,&quot;/game/mlb?format=json&quot;)
+game.key.json &lt;- fromJSON(as.character(GET(ff.url, config)))
+game.key &lt;- game.key.json$fantasy_content$game[&quot;game_key&quot;]`</code></pre>
+<p>To get info from your specific league you have to use your league id.</p>
+<pre><code>league.id &lt;- &quot;MyLeagueID&quot;
+league.key &lt;- paste0(game.key, &quot;.l.&quot;, league.id)</code></pre>
+<p>Once you have acess to your league you can pull any information from the Yahoo API. all the info comes in JSON which can be can of hard to interpret but you can translate it all to xml which is a bit easier to understand.</p>
+<pre><code>get_team_week_stats &lt;- function(team_key,week,config){
+  ff_base &lt;- &quot;https://fantasysports.yahooapis.com/fantasy/v2&quot;
+  stat_url=paste0(ff_base,&quot;/team/&quot;,team_key,&quot;/stats;type=week;week=&quot;,week)
+  stat_res&lt;- GET(stat_url,config)
+  stat_xml &lt;- read_xml(as.character(stat_res)) %&gt;% xml_ns_strip() %&gt;% xml_find_all(&quot;//stat&quot;)  %&gt;% map_df(~data_frame(
+    stat_id=xml_text(xml_find_all(.x,&quot;stat_id&quot;)),
+    stat_value=xml_text(xml_find_all(.x,&quot;value&quot;)))) %&gt;% mutate(week=week,team=team_key)
+  return(stat_xml)
+}</code></pre>
 <!-- The file analysis/chunks.R contains chunks that define default settings
 shared across the workflowr files. -->
 <!-- Update knitr chunk options -->
@@ -323,7 +361,7 @@ shared across the workflowr files. -->
 <p><strong>Last updated:</strong> 2018-01-03</p>
 <!-- Insert the code version (Git commit SHA1) if Git repository exists and R
  package git2r is installed -->
-<p><strong>Code version:</strong> 71403f0</p>
+<p><strong>Code version:</strong> 7f6f8bb</p>
 <!-- Add your analysis here -->
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
