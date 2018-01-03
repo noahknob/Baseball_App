@@ -34,6 +34,10 @@ The ROTO league is nice because it shows you whose team accumulated the most sta
 
 My idea is to create a weekly ROTO league where each week the entire league face off.  It is the same scoring as ROTO except that after each week the stats reset.  
 
+
+The code for this project is explined here [Code](Code.html)
+
+
 The stats from every week can be found here [Week_Stats](Week_One.html)
 
 
