@@ -46,132 +46,132 @@ for (i in 1:21){
 
 # Week 1
 ```{r,echo=FALSE}
-datatable(week_value[[1]])
+datatable(week_value[[1]],rownames = FALSE)
 
 ```
 
 # Week 2
 
 ```{r,echo=FALSE}
-datatable(week_value[[2]])
+datatable(week_value[[2]],rownames = FALSE)
 ```
 
 
 # Week 3
 ```{r,echo=FALSE}
-datatable(week_value[[3]])
+datatable(week_value[[3]],rownames = FALSE)
 
 ```
 
 # Week 4
 
 ```{r,echo=FALSE}
-datatable(week_value[[4]])
+datatable(week_value[[4]],rownames = FALSE)
 ```
 
 # Week 5
 ```{r,echo=FALSE}
-datatable(week_value[[5]])
+datatable(week_value[[5]],rownames = FALSE)
 
 ```
 
 # Week 6
 
 ```{r,echo=FALSE}
-datatable(week_value[[6]])
+datatable(week_value[[6]],rownames = FALSE)
 ```
 
 
 # Week 7
 ```{r,echo=FALSE}
-datatable(week_value[[7]])
+datatable(week_value[[7]],rownames = FALSE)
 
 ```
 
 # Week 8
 
 ```{r,echo=FALSE}
-datatable(week_value[[8]])
+datatable(week_value[[8]],rownames = FALSE)
 ```
 
 # Week 9
 ```{r,echo=FALSE}
-datatable(week_value[[9]])
+datatable(week_value[[9]],rownames = FALSE)
 
 ```
 
 # Week 10
 
 ```{r,echo=FALSE}
-datatable(week_value[[10]])
+datatable(week_value[[10]],rownames = FALSE)
 ```
 
 
 # Week 11
 ```{r,echo=FALSE}
-datatable(week_value[[11]])
+datatable(week_value[[11]],rownames = FALSE)
 
 ```
 
 # Week 12
 
 ```{r,echo=FALSE}
-datatable(week_value[[12]])
+datatable(week_value[[12]],rownames = FALSE)
 ```
 
 # Week 13
 ```{r,echo=FALSE}
-datatable(week_value[[13]])
+datatable(week_value[[13]],rownames = FALSE)
 
 ```
 
 # Week 14
 
 ```{r,echo=FALSE}
-datatable(week_value[[14]])
+datatable(week_value[[14]],rownames = FALSE)
 ```
 
 
 # Week 15
 ```{r,echo=FALSE}
-datatable(week_value[[15]])
+datatable(week_value[[15]],rownames = FALSE)
 
 ```
 
 # Week 16
 
 ```{r,echo=FALSE}
-datatable(week_value[[16]])
+datatable(week_value[[16]],rownames = FALSE)
 ```
 
 # Week 17
 
 ```{r,echo=FALSE}
-datatable(week_value[[17]])
+datatable(week_value[[17]],rownames = FALSE)
 ```
 
 # Week 18
 ```{r,echo=FALSE}
-datatable(week_value[[18]])
+datatable(week_value[[18]],rownames = FALSE)
 
 ```
 
 # Week 19
 
 ```{r,echo=FALSE}
-datatable(week_value[[19]])
+datatable(week_value[[19]],rownames = FALSE)
 ```
 
 # Week 20
 ```{r,echo=FALSE}
-datatable(week_value[[20]])
+datatable(week_value[[20]],rownames = FALSE)
 
 ```
 
 # Week 21
 
 ```{r,echo=FALSE}
-datatable(week_value[[21]])
+datatable(week_value[[21]],rownames = FALSE)
 ```
 
 
