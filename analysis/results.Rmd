@@ -2,6 +2,157 @@
 title: Results
 output: html_document
 ---
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+library(tidyverse)
+library(DT)
+library(knitr)
+library(kableExtra)
+library(htmlTable)
+
+##Code Necessary for Weekly ROTO winners
+
+
+
+all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t")
+
+Scoreboard <- all_week_stats %>% group_by(real_name,week) %>% summarise(total=sum(roto_points))
+
+Scoreboard <- arrange(Scoreboard,week)
+winners<- Scoreboard %>% group_by(week)%>%filter(total==max(total))%>%filter(week!=22,week!=23,week!=24)
+winners <- rename(winners,Manager=real_name,Week=week,ROTO=total)
+winner_total <- winners %>% group_by(Manager)%>% summarise(Weeks_Won = n())%>% arrange(desc(Weeks_Won))
+
+
+```
+
+
+
+# Weekly ROTO Winners
+
+```{r,echo=FALSE}
+winners %>% 
+  kable("html") %>%
+  kable_styling(full_width = FALSE)
+
+
+```
+
+# Total Weeks Won
+
+```{r,echo=FALSE}
+winner_total %>% 
+  kable("html") %>%
+  kable_styling(full_width = FALSE)
+```
+
+
+
+
+# Full Season ROTO Standings
+
+```{r,echo=FALSE}
+library(tidyverse)
+library(dplyr)
+
+
+## Code Nesessary to find Season ROTO Standings
+
+####Could have grabbed straight from yahoo most likely, but I wanted practice with SQL
+
+
+
+names <-read_delim("/Users/noahknoblauch/Baseball/Team_Names.txt",delim = "\t")
+all_stats_hits_innings <- read_delim("/Users/noahknoblauch/Baseball/all_stats_hits_innings.txt",delim="\t",guess_max=10000)
+all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t")
+all_stats_hits_innings <- inner_join(all_stats_hits_innings,names,by="team_name")
+
+
+all_stats_hits_innings <-all_stats_hits_innings%>%
+  select(-team,-team_name,-team_key)
+
+hits_ab <- all_stats_hits_innings%>%
+  filter(stats=="Hits / At Bats")
+
+hits_ab <-separate(hits_ab,stat_value,c("hits","at_bats"),sep="/")%>%
+  transform(hits=as.numeric(hits),at_bats=as.numeric(at_bats))
+
+batting_avg <- hits_ab%>%
+  group_by(real_name)%>%
+  summarise(hits=sum(hits),At_bats=sum(at_bats))%>%
+  mutate(AVG=hits/At_bats)
+
+
+Earned_runs <- all_stats_hits_innings%>%
+  select(-stat_id)%>%
+  filter(stats=="Innings Pitched"|stats=="Earned Run Average"|stats=="WHIP")%>%
+  transform(stat_value=as.numeric(stat_value))%>%
+  spread(stats,stat_value)
+
+names(Earned_runs)[3] <- "ERA"
+names(Earned_runs)[4] <- "IP"
+names(Earned_runs)[2] <- "Manager"
+
+Earned_runs <- Earned_runs%>%
+  group_by(week)%>%
+  mutate(runs=(ERA*IP)/9)%>%
+  mutate(walks_hits=IP*WHIP)%>%
+  group_by(Manager)%>%
+  summarise(Total_runs=sum(runs),Total_walk_hits=sum(walks_hits),IP=sum(IP))
+  
+
+ERA_WHIP <- Earned_runs%>%
+  mutate(WHIP=Total_walk_hits/IP,ERA=(Total_runs/IP)*9)%>%
+  select(-Total_walk_hits,-Total_runs,-IP)
+
+gathered_ERA_WHIP <- gather(ERA_WHIP,stats,value,-Manager)%>%
+  group_by(stats)%>%
+  mutate(roto=rank(-value))
+
+
+batting_roto <- all_week_stats%>%
+  filter(stats!="Batting Average",stats!="Earned Run Average",stats!="WHIP")
+names(batting_roto)[7]<-"Manager"
+
+batting_roto<- batting_roto%>%
+  group_by(Manager,stats)%>%
+  summarise(value=sum(stat_value))%>%
+  group_by(stats)%>%
+  mutate(roto=rank(value))
+
+final_roto <- rbind(gathered_ERA_WHIP,batting_roto)
+
+roto_season_scoreboard <- final_roto %>%
+  group_by(Manager)%>%
+  summarise(roto=sum(roto))%>%
+  arrange(desc(roto))%>%ungroup()
+
+summed_weekly_roto <- all_week_stats %>%
+  group_by(real_name,week) %>%
+  summarise(total=sum(roto_points)) %>%
+  group_by(real_name)%>%
+  summarise(total=sum(total))%>%
+  arrange(desc(total))
+
+
+```
+
+```{r,echo=FALSE}
+roto_season_scoreboard %>% 
+  kable("html",row.names = TRUE) %>%
+  kable_styling(full_width = FALSE)
+```
+
+
+# Scoreboard if Weekly ROTO scores summed from every week
+
+
+```{r,echo=FALSE}
+summed_weekly_roto %>% 
+  kable("html",row.names = TRUE) %>%
+  kable_styling(full_width = FALSE)
+```
+
+
 
 
 * [Outiline](outline.html)
