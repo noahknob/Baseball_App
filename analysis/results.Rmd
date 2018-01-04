@@ -50,7 +50,7 @@ winner_total %>%
 
 # Full Season ROTO Standings
 
-```{r,echo=FALSE}
+```{r,echo=FALSE,warning=FALSE}
 library(tidyverse)
 library(dplyr)
 
@@ -143,7 +143,7 @@ roto_season_scoreboard %>%
 ```
 
 
-# Scoreboard if Weekly ROTO scores summed from every week
+# Scoreboard if Weekly ROTO scores summed from each week
 
 
 ```{r,echo=FALSE}
