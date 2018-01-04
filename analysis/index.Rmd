@@ -35,38 +35,15 @@ The ROTO league is nice because it shows you whose team accumulated the most sta
 My idea is to create a weekly ROTO league where each week the entire league face off.  It is the same scoring as ROTO except that after each week the stats reset.  
 
 
-The code for this project is explined here [Code](Code.html)
+The code for gathering data from Yahoo is explined here [Code](Code.html)
 
 
 The stats from every week can be found here [Week_Stats](Week_One.html)
 
+The Results can be found here [Results](results.html)
+
 
 Here are the winners of each week, I left out weeks 22 through 24 because those were the playoff weeks, and some teams were not paying attention.
 
 
-
-# Winners
-Here are the winners of each week, I left out weeks 22 through 24 because those were the playoff weeks, and some teams were not paying attention.
-
-```{r,echo=FALSE}
-winners %>% 
-  kable("html") %>%
-  kable_styling(full_width = FALSE)
-
-
-```
-
-
-
-# Total Wins
-Total weeks won per Team
-```{r,echo=FALSE}
-winner_total %>% 
-  kable("html") %>%
-  kable_styling(full_width = FALSE)
-```
-
-
-
-If name not listed then 0 weeks won.
 
