@@ -10,10 +10,18 @@ These are the stats from every team each week. With a Roto column added to show 
 ```{r, echo=FALSE,message=FALSE,warning=FALSE}
 library(tidyverse)
 library(DT)
-all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t")
+all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t",guess_max=10000)
+
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE,message=FALSE}
+all_week_stats <- all_week_stats %>%
+  filter(Stat != "Hits / At Bats", Stat != "IP")%>%
+  mutate(stat_value=as.numeric(stat_value)) %>%
+  group_by(Stat,week)%>%
+  mutate(roto_points=ifelse(Stat =="WHIP"|Stat=="ERA",rank(-stat_value),rank(stat_value)))
+
+
 regular_season_stats <-all_week_stats%>%
   filter(week !=22,week!=23,week!=24)
 
@@ -32,8 +40,8 @@ winner_total <- winners%>%
 week_value<-list()
 
 for (i in 1:21){
-  week<- all_week_stats%>% filter(week==i)%>%select(real_name,stats,stat_value)
-  df <- spread(week,stats,stat_value)
+  week<- all_week_stats%>% filter(week==i)%>%select(real_name,Stat,stat_value)
+  df <- spread(week,Stat,stat_value)
 
   week_roto <-Scoreboard %>%filter(week==i)%>%select(ROTO,real_name)
   week_stats <- inner_join(df,week_roto,by="real_name")
@@ -43,6 +51,8 @@ for (i in 1:21){
 
 
 ```
+
+
 
 # Week 1
 ```{r,echo=FALSE}
