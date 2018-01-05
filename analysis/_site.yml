@@ -7,10 +7,10 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
-      href: about.html
     - text: "Code"
       href: Code.html
+    - text: "About"
+      href: about.html
     - text: "License"
       href: license.html
   right:
