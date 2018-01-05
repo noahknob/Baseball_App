@@ -42,6 +42,7 @@ config <-  httr::config(token = token)
 
 ```
 
+We now need to tell Yahoo that we want info from BASEBALL fantasy leagues and no other sport.  
 
 
 ```
@@ -57,7 +58,49 @@ league.id <- "MyLeagueID"
 league.key <- paste0(game.key, ".l.", league.id)
 ```
 
-Once you have acess to your league you can pull any information from the Yahoo API.  all the info comes in JSON which can be can of hard to interpret but you can translate it all to xml which is a bit easier to understand.  
+Once you have acess to your league you can pull any information from the Yahoo API.  The info comes in JSON or XML. JSON can be kind of hard to interpret. So I chose to read it in as xml which is a bit easier to understand.  
+
+The first bit of Info I grabbed were the team names.
+
+
+```
+
+pull_team_names <- function(league.key,config){
+
+  league_url <- sprintf("https://fantasysports.yahooapis.com/fantasy/v2/league/%s/teams/metadata?format=xml", league.key)
+  teams_dat <- GET(league_url,config)
+  teams_xml <- read_xml(as.character(teams_dat)) %>% xml_ns_strip()
+  all_teams <- xml_find_all(teams_xml,"//team")
+  team_df <- data_frame(
+      team_key=xml_text(xml_find_all(all_teams,"team_key")),
+    team_id=xml_text(xml_find_all(all_teams,"team_id")),
+    team_name=xml_text(xml_find_all(all_teams,"name")),
+  )
+  return(team_df)
+}
+
+
+```
+
+The xml_find_all function is great. It allows you gather all information under nodes with specific names.  The team names were stored in the value "name"
+
+
+
+
+```
+pull_stat_categories<- function(config){
+  ff_base <- "https://fantasysports.yahooapis.com/fantasy/v2"
+  stat_url=paste0(ff_base,"/game/370/stat_categories/?format=xml")
+  stat_categories <- read_xml(as.character(GET(stat_url,config))) %>% xml_ns_strip()
+  all_stats <- xml_find_all(stat_categories,"//stat")
+  all_names <- all_stats %>% map_df(~data_frame(
+    stat_name=xml_text(xml_find_all(.x,"name")),
+    stat_id=xml_text(xml_find_all(.x,"stat_id"))))
+  return(all_names)
+}
+
+```
+This function grabs the names of all the stat categories.  There are 90 stat categories, but my league only used 10.
 
 
 ```
@@ -72,30 +115,43 @@ get_team_week_stats <- function(team_key,week,config){
 }
 ```
 
+The get_team_week_stats function will grab the stats from a pariicular team for a certain week.
 
-<!-- The file analysis/chunks.R contains chunks that define default settings
-shared across the workflowr files. -->
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
+
+Create data frames with all team names, and another with all the stat categories
+```
+team_df <- pull_team_names(league.key,config)
+stat_categories <- pull_stat_categories(config)
 ```
 
-<!-- Update knitr chunk options -->
-```{r knitr-opts-chunk, include=FALSE}
+
+```
+weeks <- data_frame(week=1:24)
+weeks <- weeks %>% mutate(c=1)
+team_df <- team_df %>% mutate(c=1)
+team_df <-inner_join(weeks,team_df,by="c")
+all_week_stats <- group_by(team_df,team_key,team_name,week) %>% do(get_team_week_stats(.$team_key,.$week,config))%>%ungroup()
+```
+In the last line of code I grab all the stats from every week and every team and put into one data frame
+
+```
+all_week_stats <- inner_join(stat_categories,all_week_stats,by="stat_id")
+
+all_week_stats <- all_week_stats%>%
+  mutate(stats=ifelse(Stat_Name=="(Walks + Hits)/ Innings Pitched","WHIP",stat_name))%>%
+  select(-team_name,-team,-team_key,-stat_id,-stat_name)
+
+```
+After I have my large data frame of stats, I manipulated it a bit.  Unti I was left with a data frame of 4 columns:Stat_Name,stat_value,week,Manager
+
+I then saved the data frame into my computer
+
+```
+write_delim(all_stats_hits_innings,"/Users/noahknoblauch/Baseball/all_stats_hits_innings.txt",delim="\t")
 ```
 
-<!-- Insert the date the file was last updated -->
-```{r last-updated, echo=FALSE, results='asis'}
-```
 
-<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
- package git2r is installed -->
-```{r code-version, echo=FALSE, results='asis'}
-```
 
-<!-- Add your analysis here -->
+The code to do all the analysis can be found here [analysis](anlalysis.html)
 
-## Session information
 
-<!-- Insert the session information into the document -->
-```{r session-info}
-```
