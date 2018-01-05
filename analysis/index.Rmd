@@ -4,26 +4,6 @@ output:
   html_document:
     toc: false
 ---
-```{r, echo=FALSE,message=FALSE,warning=FALSE}
-library(tidyverse)
-library(DT)
-library(knitr)
-library(kableExtra)
-library(htmlTable)
-
-all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t")
-
-Scoreboard <- all_week_stats %>% group_by(real_name,week) %>% summarise(total=sum(roto_points))
-
-Scoreboard <- arrange(Scoreboard,week)
-winners<- Scoreboard %>% group_by(week)%>%filter(total==max(total))%>%filter(week!=22,week!=23,week!=24)
-winners <- rename(winners,Manager=real_name,Week=week,ROTO=total)
-winner_total <- winners %>% group_by(Manager)%>% summarise(Weeks_Won = n())%>% arrange(desc(Weeks_Won))
-
-
-```
-
-
 
 In Yahoo Fantasy Baseball there are two different types of league formats.  Head to Head and ROTO.  In a H2H league you only compete agianst one other manager each week. And in A ROTO league you compete against the whole league for the entire year.
 
@@ -37,6 +17,7 @@ My idea is to create a weekly ROTO league where each week the entire league face
 
 The code for gathering data from Yahoo is explined here [Code](Code.html)
 
+The code for all the analysis can be found here [analysis](analysis.html)
 
 The stats from every week can be found here [Week_Stats](Week_One.html)
 
