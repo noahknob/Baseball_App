@@ -337,6 +337,7 @@ token &lt;- oauth2.0_token(endpoint, app, use_oob = TRUE, as_header = TRUE,
 
 config &lt;-  httr::config(token = token)
 </code></pre>
+<p>We now need to tell Yahoo that we want info from BASEBALL fantasy leagues and no other sport.</p>
 <pre><code>ff_base &lt;- &quot;https://fantasysports.yahooapis.com/fantasy/v2&quot;
 ff.url &lt;- paste0(ff_base,&quot;/game/mlb?format=json&quot;)
 game.key.json &lt;- fromJSON(as.character(GET(ff.url, config)))
@@ -344,7 +345,37 @@ game.key &lt;- game.key.json$fantasy_content$game[&quot;game_key&quot;]`</code><
 <p>To get info from your specific league you have to use your league id.</p>
 <pre><code>league.id &lt;- &quot;MyLeagueID&quot;
 league.key &lt;- paste0(game.key, &quot;.l.&quot;, league.id)</code></pre>
-<p>Once you have acess to your league you can pull any information from the Yahoo API. all the info comes in JSON which can be can of hard to interpret but you can translate it all to xml which is a bit easier to understand.</p>
+<p>Once you have acess to your league you can pull any information from the Yahoo API. The info comes in JSON or XML. JSON can be kind of hard to interpret. So I chose to read it in as xml which is a bit easier to understand.</p>
+<p>The first bit of Info I grabbed were the team names.</p>
+<pre><code>
+pull_team_names &lt;- function(league.key,config){
+
+  league_url &lt;- sprintf(&quot;https://fantasysports.yahooapis.com/fantasy/v2/league/%s/teams/metadata?format=xml&quot;, league.key)
+  teams_dat &lt;- GET(league_url,config)
+  teams_xml &lt;- read_xml(as.character(teams_dat)) %&gt;% xml_ns_strip()
+  all_teams &lt;- xml_find_all(teams_xml,&quot;//team&quot;)
+  team_df &lt;- data_frame(
+      team_key=xml_text(xml_find_all(all_teams,&quot;team_key&quot;)),
+    team_id=xml_text(xml_find_all(all_teams,&quot;team_id&quot;)),
+    team_name=xml_text(xml_find_all(all_teams,&quot;name&quot;)),
+  )
+  return(team_df)
+}
+
+</code></pre>
+<p>The xml_find_all function is great. It allows you gather all information under nodes with specific names. The team names were stored in the value “name”</p>
+<pre><code>pull_stat_categories&lt;- function(config){
+  ff_base &lt;- &quot;https://fantasysports.yahooapis.com/fantasy/v2&quot;
+  stat_url=paste0(ff_base,&quot;/game/370/stat_categories/?format=xml&quot;)
+  stat_categories &lt;- read_xml(as.character(GET(stat_url,config))) %&gt;% xml_ns_strip()
+  all_stats &lt;- xml_find_all(stat_categories,&quot;//stat&quot;)
+  all_names &lt;- all_stats %&gt;% map_df(~data_frame(
+    stat_name=xml_text(xml_find_all(.x,&quot;name&quot;)),
+    stat_id=xml_text(xml_find_all(.x,&quot;stat_id&quot;))))
+  return(all_names)
+}
+</code></pre>
+<p>This function grabs the names of all the stat categories. There are 90 stat categories, but my league only used 10.</p>
 <pre><code>get_team_week_stats &lt;- function(team_key,week,config){
   ff_base &lt;- &quot;https://fantasysports.yahooapis.com/fantasy/v2&quot;
   stat_url=paste0(ff_base,&quot;/team/&quot;,team_key,&quot;/stats;type=week;week=&quot;,week)
@@ -354,39 +385,26 @@ league.key &lt;- paste0(game.key, &quot;.l.&quot;, league.id)</code></pre>
     stat_value=xml_text(xml_find_all(.x,&quot;value&quot;)))) %&gt;% mutate(week=week,team=team_key)
   return(stat_xml)
 }</code></pre>
-<!-- The file analysis/chunks.R contains chunks that define default settings
-shared across the workflowr files. -->
-<!-- Update knitr chunk options -->
-<!-- Insert the date the file was last updated -->
-<p><strong>Last updated:</strong> 2018-01-03</p>
-<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
- package git2r is installed -->
-<p><strong>Code version:</strong> 7f6f8bb</p>
-<!-- Add your analysis here -->
-<div id="session-information" class="section level2">
-<h2>Session information</h2>
-<!-- Insert the session information into the document -->
-<pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.4.3 (2017-11-30)
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
-Running under: macOS High Sierra 10.13.2
+<p>The get_team_week_stats function will grab the stats from a pariicular team for a certain week.</p>
+<p>Create data frames with all team names, and another with all the stat categories</p>
+<pre><code>team_df &lt;- pull_team_names(league.key,config)
+stat_categories &lt;- pull_stat_categories(config)</code></pre>
+<pre><code>weeks &lt;- data_frame(week=1:24)
+weeks &lt;- weeks %&gt;% mutate(c=1)
+team_df &lt;- team_df %&gt;% mutate(c=1)
+team_df &lt;-inner_join(weeks,team_df,by=&quot;c&quot;)
+all_week_stats &lt;- group_by(team_df,team_key,team_name,week) %&gt;% do(get_team_week_stats(.$team_key,.$week,config))%&gt;%ungroup()</code></pre>
+<p>In the last line of code I grab all the stats from every week and every team and put into one data frame</p>
+<pre><code>all_week_stats &lt;- inner_join(stat_categories,all_week_stats,by=&quot;stat_id&quot;)
 
-Matrix products: default
-BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
-LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
-
-locale:
-[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
-
-attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
-
-loaded via a namespace (and not attached):
- [1] compiler_3.4.3  backports_1.1.1 magrittr_1.5    rprojroot_1.2  
- [5] tools_3.4.3     htmltools_0.3.6 yaml_2.1.16     Rcpp_0.12.14   
- [9] stringi_1.1.6   rmarkdown_1.8   knitr_1.18      git2r_0.19.0   
-[13] stringr_1.2.0   digest_0.6.13   evaluate_0.10.1</code></pre>
-</div>
+all_week_stats &lt;- all_week_stats%&gt;%
+  mutate(stats=ifelse(Stat_Name==&quot;(Walks + Hits)/ Innings Pitched&quot;,&quot;WHIP&quot;,stat_name))%&gt;%
+  select(-team_name,-team,-team_key,-stat_id,-stat_name)
+</code></pre>
+<p>After I have my large data frame of stats, I manipulated it a bit. Unti I was left with a data frame of 4 columns:Stat_Name,stat_value,week,Manager</p>
+<p>I then saved the data frame into my computer</p>
+<pre><code>write_delim(all_stats_hits_innings,&quot;/Users/noahknoblauch/Baseball/all_stats_hits_innings.txt&quot;,delim=&quot;\t&quot;)</code></pre>
+<p>The code to do all the analysis can be found here <a href="anlalysis.html">analysis</a></p>
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
 TeX fonts only; see
