@@ -3,7 +3,7 @@ output_dir: "../docs"
 include: [".nojekyll"]
 exclude: ["include"]
 navbar:
-  title: Baseball_outline
+  title: Baseball_App
   left:
     - text: "Home"
       href: index.html
