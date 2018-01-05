@@ -152,6 +152,6 @@ write_delim(all_stats_hits_innings,"/Users/noahknoblauch/Baseball/all_stats_hits
 
 
 
-The code to do all the analysis can be found here [analysis](anlalysis.html)
+The code to do all the analysis can be found here [analysis](analysis.html)
 
 
