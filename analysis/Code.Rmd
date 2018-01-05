@@ -1,5 +1,7 @@
 ---
 title: "Code"
+text: "Yahoo Code"
+href: Code.html
 output: html_document
 ---
 
