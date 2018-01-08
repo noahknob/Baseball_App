@@ -7,6 +7,8 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+    - text: "About"
+      href: about.html
     - text: "Results"
       href: results.html
     - text: "Stats"
@@ -15,8 +17,6 @@ navbar:
       href: analysis.html
     - text: "Code"
       href: Code.html
-    - text: "About"
-      href: about.html
     - text: "License"
       href: license.html
   right:
