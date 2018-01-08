@@ -316,8 +316,10 @@ div.section {
 </div>
 
 
+<p>The results only take stats from week 1 to week 21. Weeks 22, 23, and 24 omitted because those were the playoff weeks, some teams were not paying attention for those weeks.</p>
 <div id="weekly-roto-winners" class="section level1">
 <h1>Weekly ROTO Winners</h1>
+<p>Here are the winners of each week with their corresponding ROTO score for that week.</p>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -569,6 +571,7 @@ Matt
 </div>
 <div id="total-weeks-won" class="section level1">
 <h1>Total Weeks Won</h1>
+This Table shows how many weeks each team one through out the season
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -648,81 +651,10 @@ Edward
 </tbody>
 </table>
 </div>
-<div id="full-season-roto-standings" class="section level1">
-<h1>Full Season ROTO Standings</h1>
-<pre class="r"><code>library(tidyverse)
-all_week_stats &lt;- read_delim(&quot;/Users/noahknoblauch/Baseball/all_week_stats.txt&quot;,delim=&quot;\t&quot;,guess_max=10000)
+<div id="regular-season-roto-standings" class="section level1">
+<h1>Regular Season ROTO Standings</h1>
+Here are the rankings in a normal ROTO legue scoring format<br />
 
-all_stats_hits_innings &lt;- all_week_stats
-
-
-all_week_stats &lt;- all_week_stats %&gt;%
-  filter(Stat != &quot;Hits / At Bats&quot;, Stat != &quot;IP&quot;)%&gt;%
-  mutate(stat_value=as.numeric(stat_value)) %&gt;%
-  group_by(Stat,week)%&gt;%
-  mutate(roto_points=ifelse(Stat ==&quot;WHIP&quot;|Stat==&quot;ERA&quot;,rank(-stat_value),rank(stat_value)))
-
-
-
-hits_ab &lt;- all_stats_hits_innings%&gt;%
-  filter(Stat==&quot;Hits / At Bats&quot;)
-
-hits_ab &lt;-separate(hits_ab,stat_value,c(&quot;hits&quot;,&quot;at_bats&quot;),sep=&quot;/&quot;)%&gt;%
-  transform(hits=as.numeric(hits),at_bats=as.numeric(at_bats))
-
-batting_avg &lt;- hits_ab%&gt;%
-  group_by(real_name)%&gt;%
-  summarise(hits=sum(hits),At_bats=sum(at_bats))%&gt;%
-  mutate(AVG=hits/At_bats)
-
-
-Earned_runs &lt;- all_stats_hits_innings%&gt;%
-  filter(Stat==&quot;IP&quot;|Stat==&quot;ERA&quot;|Stat==&quot;WHIP&quot;)%&gt;%
-  transform(stat_value=as.numeric(stat_value))%&gt;%
-  spread(Stat,stat_value)
-
-names(Earned_runs)[2] &lt;- &quot;Manager&quot;
-
-Earned_runs &lt;- Earned_runs%&gt;%
-  group_by(week)%&gt;%
-  mutate(runs=(ERA*IP)/9)%&gt;%
-  mutate(walks_hits=IP*WHIP)%&gt;%
-  group_by(Manager)%&gt;%
-  summarise(Total_runs=sum(runs),Total_walk_hits=sum(walks_hits),IP=sum(IP))
-  
-
-ERA_WHIP &lt;- Earned_runs%&gt;%
-  mutate(WHIP=Total_walk_hits/IP,ERA=(Total_runs/IP)*9)%&gt;%
-  select(-Total_walk_hits,-Total_runs,-IP)
-
-gathered_ERA_WHIP &lt;- gather(ERA_WHIP,Stat,value,-Manager)%&gt;%
-  group_by(Stat)%&gt;%
-  mutate(roto=rank(-value))
-
-
-batting_roto &lt;- all_week_stats%&gt;%
-  filter(Stat!=&quot;AVG&quot;,Stat!=&quot;ERA&quot;,Stat!=&quot;WHIP&quot;)
-names(batting_roto)[3]&lt;-&quot;Manager&quot;
-
-batting_roto&lt;- batting_roto%&gt;%
-  group_by(Manager,Stat)%&gt;%
-  summarise(value=sum(stat_value))%&gt;%
-  group_by(Stat)%&gt;%
-  mutate(roto=rank(value))
-
-final_roto &lt;- rbind(gathered_ERA_WHIP,batting_roto)
-
-roto_season_scoreboard &lt;- final_roto %&gt;%
-  group_by(Manager)%&gt;%
-  summarise(roto=sum(roto))%&gt;%
-  arrange(desc(roto))%&gt;%ungroup()
-
-summed_weekly_roto &lt;- all_week_stats %&gt;%
-  group_by(real_name,week) %&gt;%
-  summarise(total=sum(roto_points)) %&gt;%
-  group_by(real_name)%&gt;%
-  summarise(total=sum(total))%&gt;%
-  arrange(desc(total))</code></pre>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -850,8 +782,10 @@ Austin
 </tbody>
 </table>
 </div>
-<div id="scoreboard-if-weekly-roto-scores-summed-from-each-week" class="section level1">
-<h1>Scoreboard if Weekly ROTO scores summed from each week</h1>
+<div id="summed-weekly-roto-scores" class="section level1">
+<h1>Summed weekly ROTO scores</h1>
+This scoreboard shows the standings if you add up the ROTO points from each team every week. I found this interseting becuase Noah’s team never had the most ROTO points for a single week. But tied for total ROTO over the season.<br />
+
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -978,11 +912,6 @@ Matt
 </tr>
 </tbody>
 </table>
-<ul>
-<li><a href="outline.html">Outiline</a></li>
-<li><a href="Week_One.html">Weekly Stats</a></li>
-<li><a href="Weekly_Roto.html">Weekly Roto</a></li>
-</ul>
 </div>
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
