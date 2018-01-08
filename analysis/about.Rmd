@@ -5,4 +5,6 @@ output:
     toc: false
 ---
 
-Describe your project.
+My name is Noah Knobluch and I am recent graduate from UC Davis with a degree in Physics.  I currently reside in the city of CHicago where I am actively looking for enployment.  
+
+I love baseball, my friends and I have been in the same fantasy baseball league for over 10 years now.  My friends also do a fantasy football league, in that league they have a weekly payout to the team who scores the most fantasy points that week.  When I heard about the weekly payouts, I wanted to try and incorporate it into our Fantasy Baseball league.  In order to do so I had to come up with a scoring system to determine which team had the best fantasy week.  I figured the best way would be to do ROTO scoring, but each week the stats reset to 0.  The manager with the most well rounded team would recieve the most ROTO points and would be declared the winner of the week.  
