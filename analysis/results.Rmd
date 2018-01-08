@@ -1,6 +1,7 @@
 ---
 title: Results
 output: html_document
+href: results.html
 ---
 ```{r, echo=FALSE,message=FALSE,warning=FALSE}
 library(tidyverse)
@@ -13,7 +14,13 @@ library(htmlTable)
 
 
 
-all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t")
+all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t",guess_max=10000)
+
+all_week_stats <- all_week_stats %>%
+  filter(Stat != "Hits / At Bats", Stat != "IP")%>%
+  mutate(stat_value=as.numeric(stat_value)) %>%
+  group_by(Stat,week)%>%
+  mutate(roto_points=ifelse(Stat =="WHIP"|Stat=="ERA",rank(-stat_value),rank(stat_value)))
 
 Scoreboard <- all_week_stats %>% group_by(real_name,week) %>% summarise(total=sum(roto_points))
 
@@ -24,10 +31,11 @@ winner_total <- winners %>% group_by(Manager)%>% summarise(Weeks_Won = n())%>% a
 
 
 ```
-
+The results only take stats from week 1 to week 21.  Weeks 22, 23, and 24 omitted because those were the playoff weeks, some teams were not paying attention for those weeks.    
 
 
 # Weekly ROTO Winners
+Here are the winners of each week with their corresponding ROTO score for that week. 
 
 ```{r,echo=FALSE}
 winners %>% 
@@ -38,7 +46,7 @@ winners %>%
 ```
 
 # Total Weeks Won
-
+This Table shows how many weeks each team one through out the season
 ```{r,echo=FALSE}
 winner_total %>% 
   kable("html") %>%
@@ -48,30 +56,25 @@ winner_total %>%
 
 
 
-# Full Season ROTO Standings
+# Regular Season ROTO Standings
 
-```{r,echo=FALSE,message=FALSE,warning=FALSE}
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
 library(tidyverse)
-library(dplyr)
+all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t",guess_max=10000)
+
+all_stats_hits_innings <- all_week_stats
 
 
-## Code Nesessary to find Season ROTO Standings
-
-####Could have grabbed straight from yahoo most likely, but I wanted practice with SQL
-
-
-
-names <-read_delim("/Users/noahknoblauch/Baseball/Team_Names.txt",delim = "\t")
-all_stats_hits_innings <- read_delim("/Users/noahknoblauch/Baseball/all_stats_hits_innings.txt",delim="\t",guess_max=10000)
-all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t")
-all_stats_hits_innings <- inner_join(all_stats_hits_innings,names,by="team_name")
+all_week_stats <- all_week_stats %>%
+  filter(Stat != "Hits / At Bats", Stat != "IP")%>%
+  mutate(stat_value=as.numeric(stat_value)) %>%
+  group_by(Stat,week)%>%
+  mutate(roto_points=ifelse(Stat =="WHIP"|Stat=="ERA",rank(-stat_value),rank(stat_value)))
 
 
-all_stats_hits_innings <-all_stats_hits_innings%>%
-  select(-team,-team_name,-team_key)
 
 hits_ab <- all_stats_hits_innings%>%
-  filter(stats=="Hits / At Bats")
+  filter(Stat=="Hits / At Bats")
 
 hits_ab <-separate(hits_ab,stat_value,c("hits","at_bats"),sep="/")%>%
   transform(hits=as.numeric(hits),at_bats=as.numeric(at_bats))
@@ -83,13 +86,10 @@ batting_avg <- hits_ab%>%
 
 
 Earned_runs <- all_stats_hits_innings%>%
-  select(-stat_id)%>%
-  filter(stats=="Innings Pitched"|stats=="Earned Run Average"|stats=="WHIP")%>%
+  filter(Stat=="IP"|Stat=="ERA"|Stat=="WHIP")%>%
   transform(stat_value=as.numeric(stat_value))%>%
-  spread(stats,stat_value)
+  spread(Stat,stat_value)
 
-names(Earned_runs)[3] <- "ERA"
-names(Earned_runs)[4] <- "IP"
 names(Earned_runs)[2] <- "Manager"
 
 Earned_runs <- Earned_runs%>%
@@ -104,19 +104,19 @@ ERA_WHIP <- Earned_runs%>%
   mutate(WHIP=Total_walk_hits/IP,ERA=(Total_runs/IP)*9)%>%
   select(-Total_walk_hits,-Total_runs,-IP)
 
-gathered_ERA_WHIP <- gather(ERA_WHIP,stats,value,-Manager)%>%
-  group_by(stats)%>%
+gathered_ERA_WHIP <- gather(ERA_WHIP,Stat,value,-Manager)%>%
+  group_by(Stat)%>%
   mutate(roto=rank(-value))
 
 
 batting_roto <- all_week_stats%>%
-  filter(stats!="Batting Average",stats!="Earned Run Average",stats!="WHIP")
-names(batting_roto)[7]<-"Manager"
+  filter(Stat!="AVG",Stat!="ERA",Stat!="WHIP")
+names(batting_roto)[3]<-"Manager"
 
 batting_roto<- batting_roto%>%
-  group_by(Manager,stats)%>%
+  group_by(Manager,Stat)%>%
   summarise(value=sum(stat_value))%>%
-  group_by(stats)%>%
+  group_by(Stat)%>%
   mutate(roto=rank(value))
 
 final_roto <- rbind(gathered_ERA_WHIP,batting_roto)
@@ -134,8 +134,11 @@ summed_weekly_roto <- all_week_stats %>%
   arrange(desc(total))
 
 
+
+
 ```
 
+Here are the rankings in a normal ROTO legue scoring format  
 ```{r,echo=FALSE}
 roto_season_scoreboard %>% 
   kable("html",row.names = TRUE) %>%
@@ -143,9 +146,9 @@ roto_season_scoreboard %>%
 ```
 
 
-# Scoreboard if Weekly ROTO scores summed from each week
+# Summed weekly ROTO scores
 
-
+This scoreboard shows the standings if you add up the ROTO points from each team every week.  I found this interseting becuase Noah's team never had the most ROTO points for a single week. But tied for total ROTO over the season.  
 ```{r,echo=FALSE}
 summed_weekly_roto %>% 
   kable("html",row.names = TRUE) %>%
@@ -154,7 +157,3 @@ summed_weekly_roto %>%
 
 
 
-
-* [Outiline](outline.html)
-* [Weekly Stats](Week_One.html)
-* [Weekly Roto](Weekly_Roto.html)

@@ -6,6 +6,7 @@ library(xml2)
 library(jsonlite)
 library(ggplot2)
 library(httpuv)
+library(htmltidy)
 
 #make sure that when you type `getwd()`, the current directory is `code`
 #You'll need to get auth.json
@@ -70,6 +71,12 @@ pull_team_names <- function(league.key,config){
   return(team_df)
 }
 
+
+test_name <- data_frame(Team_Name=xml_text(xml_find_all(teams_xml,"///name")))#,TEam_ID=xml_text(xml_find_all(teams_xml,"//team_id")))
+
+
+
+
 pull_stat_categories<- function(config){
   ff_base <- "https://fantasysports.yahooapis.com/fantasy/v2"
   stat_url=paste0(ff_base,"/game/370/stat_categories/?format=xml")
@@ -97,45 +104,47 @@ get_team_week_stats <- function(team_key,week,config){
   return(stat_xml)
 }
 
+
+
+stat_url_test <- paste0(ff_base,"/team/","370.l.64399.t.10","/stats;type=week;week=","14")
+stat_res_test <- GET(stat_url_test,config)
+stat_xml_test <-read_xml(as.character(stat_res_test))
+
+
+
 team_df <- pull_team_names(league.key,config)
 stat_categories <- pull_stat_categories(config)
 
-team_df <- group_by(team_df,team_key) %>% do(mutate(.,team_name=get_team_name(.$team_key,token)))
-
-#test_team_meta <- read_xml(as.character(GET(team_key_df$metadata_url[1],config(token=token))))
 weeks <- data_frame(week=1:24)
-
 weeks <- weeks %>% mutate(c=1)
 team_df <- team_df %>% mutate(c=1)
 team_df <-inner_join(weeks,team_df,by="c")
-
 all_week_stats <- group_by(team_df,team_key,team_name,week) %>% do(get_team_week_stats(.$team_key,.$week,config))%>%ungroup()
 
 all_week_stats <- inner_join(stat_categories,all_week_stats,by="stat_id")
-all_week_stats <- filter(all_week_stats,stat_name != "Innings Pitched", stat_name != "Hits / At Bats")
-
-all_week_stats <- all_week_stats %>%
-  mutate(stats=ifelse(stat_name=="(Walks + Hits)/ Innings Pitched","WHIP",stat_name))%>%
-  select(-stat_name)
-
-all_week_stats <- all_week_stats %>% mutate(stat_value=as.numeric(stat_value)) %>%
-  group_by(stats,week)%>%
-  mutate(roto_points=ifelse(stats =="WHIP"|stats=="Earned Run Average",rank(-stat_value),rank(stat_value)))
-
-all_week_stats <- all_week_stats %>% select(-team_key) %>% select(-team)
 
 names <-read_delim("/Users/noahknoblauch/Baseball/Team_Names.txt",delim = "\t")
-
 all_week_stats <- inner_join(all_week_stats,names,by="team_name")
+
+all_week_stats <- all_week_stats%>%
+  mutate(Stat_Name=ifelse(stat_name=="(Walks + Hits)/ Innings Pitched","WHIP",stat_name))%>%
+  select(-team_name,-team,-team_key,-stat_id,-stat_name)
+
+all_week_stats <- all_week_stats%>%
+  mutate(stats=ifelse(Stat_Name=="Innings Pitched","IP",Stat_Name))%>%
+  select(-Stat_Name)
+
+all_week_stats <- all_week_stats%>%
+  mutate(Stat=ifelse(stats=="Batting Average","AVG",stats))%>%
+  select(-stats)
+
+all_week_stats<- all_week_stats%>%
+  mutate(Stat=ifelse(Stat_Name=="Earned Run Average","ERA",Stat_Name))%>%
+  select(-Stat_Name)
+
 
 write_delim(all_week_stats,"/Users/noahknoblauch/Baseball/all_week_stats.txt",delim = "\t")
 
 
-Scoreboard <- all_week_stats %>% group_by(team_name,week) %>% summarise(total=sum(roto_points))
-
-Scoreboard <- arrange(Scoreboard,week)
 
 
-
-winners<- Scoreboard %>% group_by(week)%>%filter(total==max(total))
-winner_total <- winners %>% group_by(team_name)%>% summarise(weeks_won = n())%>% arrange(desc(weeks_won))
