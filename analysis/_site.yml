@@ -7,6 +7,12 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+    - text: "Results"
+      href: results.html
+    - text: "Stats"
+      href: Week_One.html
+    - text: "Analysis"
+      href: analysis.html
     - text: "Code"
       href: Code.html
     - text: "About"
