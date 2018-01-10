@@ -1,6 +1,8 @@
 ---
 title: "Analysis"
-output: html_document
+output: 
+  html_document:
+    toc: false
 ---
 The way ROTO scoring works is that the team with the most stats in a certain category is awarded the most ROTO points. For example in a league of 10 teams, the team with the most HRs is awarded 10 ROTO points, the team with the 2nd most HRs is awarded 9 ROTO points all the way down to the team with the least amount of HRs who is awarded 1 ROTO point.  If there is more than one team with the same amount of stats in one category then those team split the total points that would have been allocated to those teams.  For example, if four people tie for the most HRs, then the 10 + 9 + 8 + 7 ROTO points are devided up evenly between those four teams.  So each team recieves (10+9+8+7)/4 = 8.5 ROTO points.  
 
