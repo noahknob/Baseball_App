@@ -1,5 +1,6 @@
 library(tidyverse)
 library(dplyr)
+library(raster)
 
 all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t",guess_max=10000)
 
@@ -95,5 +96,122 @@ total <- select(summed_weekly_roto,total)
 total <- unlist(total)
 #plot+geom_col()+coord_cartesian(ylim=(c(1000,1500)))
 
+
+all_week_player_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_player_stats.txt",delim = "\t",guess_max=10000)
+
+names <-read_delim("/Users/noahknoblauch/Baseball/Team_Names.txt",delim = "\t")
+
+team_managers<-names[[("real_name")]]
+
+manager <- list()
+
+for (i in team_managers){
+  team<-all_week_player_stats%>%
+    filter(real_name==i)
+  for (j in 1:21){
+    team_df <- team %>%
+      filter(week == j)
+    manager[[i]][[j]] <- team_df
+  }
+}
+
+
+avg_runs <- all_week_player_stats %>%
+  filter(stat_name=="Runs")%>%
+  filter(stat_value!="-")%>%
+  mutate(stat_value=as.integer(stat_value))%>%
+  group_by(player_name,stat_name)%>%
+  summarise(total=sum(stat_value),avg=mean(stat_value),std=sd(stat_value),CV=cv(stat_value),CVu=cv(stat_value)/mean(stat_value))#%>%
+  #group_by(player_name)%>%
+  #summarise(max=max(avg))
+
+
+avg_player_stats <- all_week_player_stats %>%
+  filter(stat_name!="H/AB")%>%
+  filter(stat_value!="-")%>%
+  mutate(stat_value=as.numeric(stat_value))%>%
+  group_by(player_name,stat_name)%>%
+  summarise(total=sum(stat_value),
+            weeks_played=n(),
+            avg=mean(stat_value),
+            std=sd(stat_value),
+            CV=cv(stat_value),
+            CVu=cv(stat_value)/mean(stat_value))
+
+avg_runs <- avg_player_stats%>%
+  filter(stat_name=="Runs")%>%
+  filter(total>=18)
+
+avg_HR <- avg_player_stats%>%
+  filter(stat_name=="HR")%>%
+  filter(total>3)
+
+avg_SB <- avg_player_stats%>%
+  filter(stat_name=="SB")%>%
+  filter(total>5)
+
+
+avg_AVG <- avg_player_stats%>%
+  filter(stat_name=="AVG")%>%
+  filter(weeks_played>3)
+
+avg_wins <- avg_player_stats%>%
+  filter(stat_name=="Wins")%>%
+  filter(total>5)
+
+avg_SV <- avg_player_stats%>%
+  filter(stat_name=="Saves")%>%
+  filter(total>5)
+
+avg_RBI <- avg_player_stats%>%
+  filter(stat_name=="RBI")%>%
+  filter(total>15)
+
+avg_Ks <- avg_player_stats%>%
+  filter(stat_name=="Strikeouts")%>%
+  filter(total>25)
+
+
+######## AVG WHIP and AVG ERA are weird###########
+avg_WHIP <- avg_player_stats%>%
+  filter(stat_name=="WHIP")%>%
+  filter(weeks_played > 3)
+
+avg_ERA <- avg_player_stats%>%
+  filter(stat_name=="ERA")%>%
+  filter(weeks_played > 3)
+#################################################
+
+
+
+# test_run <- manager[["Noah"]][[10]]%>%
+#   select(player_name,stat_name,stat_value)%>%
+#   spread(stat_name,stat_value)
+
+
+# test_run <- test_run[c("player_name","H/AB","Runs","HR","RBI","SB","AVG","IP","Wins","Saves","Strikeouts","WHIP","ERA")]
+# Paul_Goldschmidt_AVG <- all_week_players_stats %>%
+#   filter(player_name=="Paul Goldschmidt",stat_name=="Batting Average")
+# df<-select(Paul_Goldschmidt_AVG,week,stat_value)
+
+
+#plot<-ggplot(summed_weekly_roto,(aes(real_name,total)))
+#ggplot(Paul_Goldschmidt_AVG, (aes(week,stat_value)))+geom_point()
+
+opp_stats <-c("WHIP","ERA")
+
+ERA_WHIP_Best <- all_week_stats%>%
+  filter(Stat=="WHIP" | Stat=="ERA")%>%
+  group_by(Stat,week)%>%
+  summarise(best=min(stat_value))
+
+avg_best_stat <- all_week_stats%>%
+  filter(Stat!="WHIP",Stat!="ERA")%>%
+  group_by(Stat,week)%>%
+  summarise(best=max(stat_value))#%>%
+  #summarise(avg=mean(best))
+
+avg_best_stat <- rbind(avg_best_stat,ERA_WHIP_Best)%>%
+  summarise(avg=mean(best))
 
 
