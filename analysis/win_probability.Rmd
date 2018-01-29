@@ -1,0 +1,9 @@
+---
+title: "Win Probability"
+output:
+  html_document:
+    toc: false
+---
+
+I wanted to figure out what was the probality of wining a category any given week with a certain stat.  So I createed a function that would compare a given stat to every team every week.  I then plotted the data.
+

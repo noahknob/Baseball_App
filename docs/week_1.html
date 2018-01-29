@@ -11,9 +11,9 @@
 
 
 
-<title>Home</title>
+<title>Week One Stats</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -22,6 +22,11 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="site_libs/datatables-binding-0.2/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -232,19 +237,13 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">Week One Stats</h1>
 
 </div>
 
 
-<p>In Yahoo Fantasy Baseball there are two different types of league formats. Head to Head and ROTO. In a H2H league you only compete agianst one other manager each week. And in a ROTO league you compete against the whole league for the entire year.</p>
-<p>I like the H2H league because it keeps you excited week in and week out because you want to do better than your opponent. The downside is that you could have the second most stats, in the league, that week and still lose to your opponent.</p>
-<p>The ROTO league is nice because it shows whose team accumulated the most stats, however it is hard to stay excited for the whole year.</p>
-<p>My idea is to create a weekly ROTO league where each week the entire league face off. It is the same scoring as ROTO except that after each week the stats reset.</p>
-<p>The Results can be found here <a href="results.html">Results</a></p>
-<p>The code for gathering data from Yahoo is explined here <a href="Code.html">Code</a></p>
-<p>The code for all the analysis can be found here <a href="analysis.html">analysis</a></p>
-<p>The stats from every week can be found here <a href="Week_One.html">Week_Stats</a></p>
+<div id="htmlwidget-b8e0c2e2742a5382bafd" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b8e0c2e2742a5382bafd">{"x":{"filter":"none","data":[["Austin","Dan","Edward","Jordan","Josh","Matt","Noah","Owen","Ryan","Wyatt"],[0.269,0.219,0.25,0.221,0.227,0.28,0.222,0.283,0.273,0.233],[4.64,4.4,4.5,3.55,3.58,3.79,4.71,3.53,1.52,3.21],[6,8,9,14,10,6,9,11,12,9],[28,19,32,35,25,17,35,33,43,26],[20,25,31,28,27,23,37,44,33,27],[2,3,5,3,3,9,9,3,0,2],[5,7,5,1,4,7,7,5,2,4],[73,61,47,47,88,71,72,43,66,67],[1.1,1.39,1.19,1.27,1.16,1.35,1.25,1.22,0.81,1.11],[2,3,3,4,4,4,3,2,4,7],[44.5,36.5,53.5,53,58,53.5,61,62,70.5,57.5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Manager<\/th>\n      <th>AVG<\/th>\n      <th>ERA<\/th>\n      <th>HR<\/th>\n      <th>RBI<\/th>\n      <th>Runs<\/th>\n      <th>Saves<\/th>\n      <th>SB<\/th>\n      <th>Strikeouts<\/th>\n      <th>WHIP<\/th>\n      <th>Wins<\/th>\n      <th>ROTO<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
 TeX fonts only; see

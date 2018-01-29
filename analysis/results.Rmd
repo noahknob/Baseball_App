@@ -56,6 +56,17 @@ winner_total %>%
 
 
 
+
+
+
+# 2017 standings H2H format
+```{r,echo=FALSE,warning = FALSE,message=FALSE}
+real_standings <- read_delim("/Users/noahknoblauch/Baseball/real_standings.txt",delim = "\t")
+real_standings %>% 
+  kable("html",row.names = TRUE) %>%
+  kable_styling(full_width = FALSE)
+```
+
 # Regular Season ROTO Standings
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
@@ -137,6 +148,8 @@ summed_weekly_roto <- all_week_stats %>%
 
 
 ```
+
+
 
 Here are the rankings in a normal ROTO legue scoring format  
 ```{r,echo=FALSE}

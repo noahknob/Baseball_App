@@ -135,52 +135,23 @@ stat_list <- list()
 stat_list[["Home Runs"]][[1]] <- 10
 
 
-sim_standings <- function(num) {
-  x1 <- c(2,3,4,5,6,7,8,9,10)
-  x2 <- c(1,10,3,4,5,6,7,8,9)
-  x3 <- c(9,1,2,10,4,5,6,7,8)
-  x4 <- c(8,9,1,2,3,10,5,6,7)
-  x5 <- c(7,8,9,1,2,3,4,10,6)
-  x6 <- c(10,7,8,9,1,2,3,4,5)
-  x7 <- c(5,6,10,8,9,1,2,3,4)
-  x8 <- c(4,5,6,7,10,9,1,2,3)
-  x9 <- c(3,4,5,6,7,8,10,1,2)
-  x10 <- c(6,2,7,3,8,4,9,5,1)
-  team_1_scheduale <- rep_len(x1 ,21)
-  team_2_scheduale <- rep_len(x2 ,21)
-  team_3_scheduale <- rep_len(x3 ,21)
-  team_4_scheduale <- rep_len(x4 ,21)
-  team_5_scheduale <- rep_len(x5 ,21)
-  team_6_scheduale <- rep_len(x6 ,21)
-  team_7_scheduale <- rep_len(x7 ,21)
-  team_8_scheduale <- rep_len(x8 ,21)
-  team_9_scheduale <- rep_len(x9 ,21)
-  team_10_scheduale <- rep_len(x10 ,21)
+sim_standings <- function(num,
+                          all_week_stats = read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim = "\t",guess_max = 10000),
+                          names = read_delim("/Users/noahknoblauch/Baseball/Team_names.txt",delim = "\t"),
+                          team_id = read_delim("/Users/noahknoblauch/Baseball/team_id.txt",delim = "\t"),
+                          Stats = c("Runs","Runs Batted In","Home Runs","Stolen Bases","AVG","Wins","Saves","Strikeouts","ERA","WHIP"),
+                          sim_standings = list(),
+                          stat_list = list()) {
   
-  scheduale_list <- list(team_1_scheduale,
-                         team_2_scheduale,
-                         team_3_scheduale,
-                         team_4_scheduale,
-                         team_5_scheduale,
-                         team_6_scheduale,
-                         team_7_scheduale,
-                         team_8_scheduale,
-                         team_9_scheduale,
-                         team_10_scheduale)
-  all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim = "\t",guess_max = 10000)
-  names <- read_delim("/Users/noahknoblauch/Baseball/Team_names.txt",delim = "\t")
-  team_id <- read_delim("/Users/noahknoblauch/Baseball/team_id.txt",delim = "\t")
   team_id <- inner_join(names,team_id,by = "team_name")
   
-  Stats <- c("Runs","Runs Batted In","Home Runs","Stolen Bases","AVG","Wins","Saves","Strikeouts","ERA","WHIP")
-  
+
   all_week_stats_n <- all_week_stats %>%
     filter(week != 24,week != 23,week != 22) %>%
     filter(Stat != "Hits / At Bats", Stat != "IP") %>%
     mutate(stat_value = as.numeric(stat_value))
   
-  sim_standings <- list()
-  stat_list <- list()
+
   for (value in 1:num) {
     team_id <- team_id %>%
       mutate(team_id = sample(1:10))
@@ -202,31 +173,35 @@ sim_standings <- function(num) {
       for (i in Stats) {
         for (x in 1:21) { 
           if (i == "WHIP" | i == "ERA") {
-            if (list_df[[j]][[i]][["stat_value"]][x] < list_df[[scheduale_list[[j]][[x]]]][[i]][["stat_value"]][x]) {
+            if (list_df[[j]][[i]][["stat_value"]][x] < list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+
               stat_list[[i]] <- c(stat_list[[i]],list_df[[j]][[i]][["stat_value"]][x])
               wins_df[[1]][[x]] <- 1
               loss_df[[1]][[x]] <- 0
             }
-            if (list_df[[j]][[i]][["stat_value"]][x] == list_df[[scheduale_list[[j]][[x]]]][[i]][["stat_value"]][x]) {
+            if (list_df[[j]][[i]][["stat_value"]][x] == list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
               wins_df[[1]][[x]] <- 0
               loss_df[[1]][[x]] <- 0
             }
-            if (list_df[[j]][[i]][["stat_value"]][x] > list_df[[scheduale_list[[j]][[x]]]][[i]][["stat_value"]][x]) {
+            if (list_df[[j]][[i]][["stat_value"]][x] > list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+
               wins_df[[1]][[x]] <- 0
               loss_df[[1]][[x]] <- 1
             }
           }
           else { 
-            if (list_df[[j]][[i]][["stat_value"]][x] > list_df[[scheduale_list[[j]][[x]]]][[i]][["stat_value"]][x]) {
+            if (list_df[[j]][[i]][["stat_value"]][x] > list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+
               stat_list[[i]] <- c(stat_list[[i]],list_df[[j]][[i]][["stat_value"]][x])
               wins_df[[1]][[x]] <- 1
               loss_df[[1]][[x]] <- 0
             }
-            if (list_df[[j]][[i]][["stat_value"]][x] == list_df[[scheduale_list[[j]][[x]]]][[i]][["stat_value"]][x]) {
+            if (list_df[[j]][[i]][["stat_value"]][x] == list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
               wins_df[[1]][[x]] <- 0
               loss_df[[1]][[x]] <- 0
             }
-            if (list_df[[j]][[i]][["stat_value"]][x] < list_df[[scheduale_list[[j]][[x]]]][[i]][["stat_value"]][x]) {
+            if (list_df[[j]][[i]][["stat_value"]][x] < list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+
               wins_df[[1]][[x]] <- 0
               loss_df[[1]][[x]] <- 1
             }
@@ -237,14 +212,18 @@ sim_standings <- function(num) {
       season_standings[[j]] <- bind_rows(list_df[[j]])
       season_standings[[j]] <- season_standings[[j]] %>%
         group_by(real_name) %>%
-        summarise(wins = sum(wins),losses = sum(losses),Pct = wins / (wins + losses))
+        summarise(wins = sum(wins),losses = sum(losses),Pct = wins / (wins + losses)) 
     }
     sim_standings[[value]] <- bind_rows(season_standings)
+    sim_standings[[value]] <- sim_standings[[value]] %>%
+      arrange(desc(Pct))
   }
   standings_stats <- list(sim_standings,stat_list)
-
+  
   return(standings_stats)
 }
+
+
 
 y <- sim_standings(500)
 stats_1 <- y[[2]]

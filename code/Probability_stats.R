@@ -9,103 +9,96 @@ plot(x, hx, type = "l", lty = 2, xlab = "x value",
 all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim = "\t",guess_max = 10000)
 
 all_season_stats <- all_week_stats %>%
-  filter(week != 24,week != 23,week != 22,Stat != "Hits / At Bats",Stat != "Innings Pitched") %>%
-  mutate(stat_value = as.numeric(stat_value))
+  filter(week != 24,week != 23,week != 22,Stat != "Hits / At Bats",Stat != "IP") %>%
+  mutate(stat_value = as.numeric(stat_value)) %>%
+  mutate(Stat = ifelse(Stat != "Home Runs", Stat,"HR")) %>%
+  mutate(Stat = ifelse(Stat != "Runs Batted In", Stat,"RBI")) %>%
+  mutate(Stat = ifelse(Stat != "Stolen Bases",Stat,"SB"))
 
-avg <- all_season_stats %>%
-  filter(Stat == "AVG")
-
-HR <- all_season_stats %>%
-  filter(Stat == "Home Runs")
-
-RBI <- all_season_stats %>%
-  filter(Stat == "Runs Batted In")
-
-SB <- all_season_stats %>%
-  filter(Stat == "Stolen Bases")
-
-runs <- all_season_stats %>%
-  filter(Stat == "Runs")
-
-wins <- all_season_stats %>%
-  filter(Stat == "Wins")
-
-saves <- all_season_stats %>%
-  filter(Stat == "Saves")
-
-Ks <- all_season_stats %>%
-  filter(Stat == "Strikeouts")
-
-ERA <- all_season_stats %>%
-  filter(Stat == "ERA")
-
-WHIP <- all_season_stats %>%
-  filter(Stat == "WHIP")
-
-avg <- avg[["stat_value"]]
-HR <- HR[["stat_value"]]
-RBI <- RBI[["stat_value"]]
-SB <- SB[["stat_value"]]
-runs <- runs[["stat_value"]]
-wins <- wins[["stat_value"]]
-saves <- saves[["stat_value"]]
-Ks <- Ks[["stat_value"]]
-ERA <- ERA[["stat_value"]]
-WHIP <- WHIP[["stat_value"]]
+season_stats <- all_season_stats %>%
+  spread(Stat,stat_value) #%>%
+  # #mutate(avgdist = pnorm(AVG,mean = mean(AVG),sd = sd(AVG)),
+  #        ERAdist = pnorm(ERA,mean = mean(ERA), sd = sd(ERA)),
+  #        WHIPdist = pnorm(WHIP,mean = mean(WHIP),sd = sd(WHIP)),
+  #        HRdist = pnorm(HR,mean = mean(HR), sd = sd(HR)),
+  #        RBIdist = pnorm(RBI,mean = mean(RBI),sd = sd(RBI)),
+  #        SBdist = pnorm(SB,mean = mean(SB), sd = sd(SB)),
+  #        winsdist = pnorm(Wins,mean = mean(Wins),sd = sd(Wins)),
+  #        runsdist = pnorm(Runs,mean = mean(Runs), sd = sd(Runs)),
+  #        Ksdist = pnorm(Strikeouts,mean = mean(Strikeouts),sd = sd(Strikeouts)),
+  #        savesdist = pnorm(Saves,mean = mean(Saves), sd = sd(Saves)))
 
 
-avg_ordered <- sort(avg)
-avg_dens <- pnorm(avg_ordered,mean = mean(avg_ordered),sd = sd(avg_ordered))
+write_delim(all_season_stats,"/Users/noahknoblauch/Baseball/all_season_stats.txt",delim = "\t")
 
-plot(avg,pnorm(avg,mean = mean(avg),sd = sd(avg)))
-plot(ecdf(avg))
-points(avg,pnorm(avg,mean = mean(avg),sd = sd(avg)),col = "red")
-
-plot(HR,pnorm(HR,mean = mean(HR),sd = sd(HR)))
-plot(ecdf(HR))
-points(HR,pnorm(HR,mean = mean(HR),sd = sd(HR)),col = "red")
-
-plot(RBI,pnorm(RBI,mean = mean(RBI),sd = sd(RBI)))
-plot(ecdf(RBI))
-points(RBI,pnorm(RBI,mean = mean(RBI),sd = sd(RBI)),col = "red")
-
-plot(SB,pnorm(SB,mean = mean(SB),sd = sd(SB)))
-plot(ecdf(SB))
-points(SB,pnorm(SB,mean = mean(SB),sd = sd(SB)),col = "red")
-
-plot(runs,pnorm(runs,mean = mean(runs),sd = sd(runs)))
-plot(ecdf(runs))
-points(runs,pnorm(runs,mean = mean(runs),sd = sd(runs)),col = "red")
-
-plot(wins,pnorm(wins,mean = mean(wins),sd = sd(wins)))
-plot(ecdf(wins))
-points(wins,pnorm(wins,mean = mean(wins),sd = sd(wins)),col = "red")
-
-plot(Ks,pnorm(Ks,mean = mean(Ks),sd = sd(Ks)))
-plot(ecdf(Ks))
-points(Ks,pnorm(Ks,mean = mean(Ks),sd = sd(Ks)),col = "red")
-
-plot(saves,pnorm(saves,mean = mean(saves),sd = sd(saves)))
-plot(ecdf(saves))
-points(saves,pnorm(saves,mean = mean(saves),sd = sd(saves)),col = "red")
-
-plot(ERA,pnorm(ERA,mean = mean(ERA),sd = sd(ERA)))
-plot(ecdf(ERA))
-points(ERA,pnorm(ERA,mean = mean(ERA),sd = sd(ERA)),col = "red")
-
-plot(WHIP,pnorm(WHIP,mean = mean(WHIP),sd = sd(WHIP)))
-plot(ecdf(WHIP))
-points(WHIP,pnorm(WHIP,mean = mean(WHIP),sd = sd(WHIP)),col = "red")
+plot(season_stats[["AVG"]],season_stats[["avgdist"]])
+plot(ecdf(season_stats[["AVG"]]))
+points(season_stats[["AVG"]],pnorm(season_stats[["AVG"]],mean = mean(season_stats[["AVG"]]),sd = sd(season_stats[["AVG"]])),col = "red")
 
 
+winning_prob <- function(runs,
+                         RBI,
+                         HR,
+                         SB,
+                         AVG,
+                         wins,
+                         saves,
+                         Ks,
+                         ERA,
+                         WHIP,
+                         Stats = c("Runs","RBI","HR","SB","AVG","Wins","Saves","Ks","ERA","WHIP"),
+                         season_stats = read_delim("/Users/noahknoblauch/Baseball/prob_season_stats.txt",delim = "\t")) {
+
+  winning_df <- data_frame(Stats = Stats,
+                           Value = c(runs,RBI,HR,SB,AVG,wins,saves,Ks,ERA,WHIP),
+                           winning.prob = c(pnorm(runs, mean = mean(season_stats[["Runs"]]), sd = sd(season_stats[["Runs"]])),
+                                            pnorm(RBI, mean = mean(season_stats[["RBI"]]), sd = sd(season_stats[["RBI"]])),
+                                            pnorm(HR, mean = mean(season_stats[["HR"]]), sd = sd(season_stats[["HR"]])),
+                                            pnorm(SB, mean = mean(season_stats[["SB"]]), sd = sd(season_stats[["SB"]])),
+                                            pnorm(AVG, mean = mean(season_stats[["AVG"]]), sd = sd(season_stats[["AVG"]])),
+                                            pnorm(wins, mean = mean(season_stats[["Wins"]]), sd = sd(season_stats[["Wins"]])),
+                                            pnorm(saves, mean = mean(season_stats[["Saves"]]), sd = sd(season_stats[["Saves"]])),
+                                            pnorm(Ks, mean = mean(season_stats[["Strikeouts"]]), sd = sd(season_stats[["Strikeouts"]])),
+                                            pnorm(ERA, mean = mean(season_stats[["ERA"]]), sd = sd(season_stats[["ERA"]])),
+                                            pnorm(WHIP, mean = mean(season_stats[["WHIP"]]), sd = sd(season_stats[["WHIP"]]))))
+  season_winning_prob <- winning_df %>%
+    summarise(Win.Percentage = mean(winning.prob))
+
+  winning.list <- list(winning_df,season_winning_prob)
+  return(winning.list)
 
 
+}
+
+probability_winning <- winning_prob(35,40,10,4,0.290,5,5,65,3.12,1.2)
+
+df <- all_season_stats %>%
+  group_by(Stat) %>%
+  mutate(avg = mean(stat_value),sd = sd(stat_value), prob = pnorm(stat_value, mean = avg, sd = sd)) %>% ungroup() %>%
+  group_by(Stat,real_name) %>%
+  summarise(team_avg = mean(stat_value),avg = avg[1],sd = sd[1]) %>%
+  mutate(prob = pnorm(team_avg, mean = avg , sd = sd)) %>%
+  mutate(prob = ifelse(Stat == "WHIP" | Stat == "ERA", 1 - prob,prob)) %>%
+  filter(Stat != "IP")
+
+winning_percentage_probability <- df %>%
+  select(-avg,-sd) %>% ungroup() %>%
+  group_by(real_name) %>% summarise(winning.prob = mean(prob))
 
 
-ggplot(data_frame(average = HR),aes(x = average)) + stat_density()
+value <- 1
+test <- new.function("Noah")
+#noah_probaility <- winning_prob(33.7,9.8,)
+probability_winning[[1]]
 
+Noah <-  all_season_stats %>%
+  filter(real_name == "Noah") %>%
+  group_by(Stat) %>%
+  summarise(avg = mean(stat_value))
 
+Noah[Stat == "Runs"]["avg"]
 
-pnorm(HR,mean = hr_mean,sd = hr_sd)
-
+x <- c("a", "b", "aaaaaaaaaaa")
+toString()
+toString(x, width = 8)
 
