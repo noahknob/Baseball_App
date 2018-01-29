@@ -8,3 +8,4 @@ data/auth.json
 analysis/figure
 analysis/*html
 analysis/*_cache
+.httr-oauth
