@@ -132,6 +132,8 @@ actual_standings <- function(all_week_stats = read_delim("/Users/noahknoblauch/B
                              list_df = list(),
                              stat_list = list()) {
 
+
+
   team_id <- inner_join(names,team_id,by = "team_name")
 
   all_week_stats <- inner_join(all_week_stats,team_id,by = "real_name")
@@ -141,6 +143,7 @@ actual_standings <- function(all_week_stats = read_delim("/Users/noahknoblauch/B
     mutate(stat_value = as.numeric(stat_value))
 
   all_team_stats <- split(all_week_stats,all_week_stats$team_id)
+
 
   for (z in 1:10) {
     list_df[[z]] <- split(all_team_stats[[z]],all_team_stats[[z]]$Stat)
@@ -181,6 +184,7 @@ actual_standings <- function(all_week_stats = read_delim("/Users/noahknoblauch/B
         }
       }
       list_df[[j]][[i]] <- mutate(list_df[[j]][[i]],wins = wins_df[["wins"]],losses = loss_df[["loss"]])
+
     }
     season_standings[[j]] <- bind_rows(list_df[[j]])
     season_standings[[j]] <- season_standings[[j]] %>%
@@ -188,6 +192,7 @@ actual_standings <- function(all_week_stats = read_delim("/Users/noahknoblauch/B
       summarise(wins = sum(wins),losses = sum(losses),Pct = wins / (wins + losses))
 
   }
+
   real_standings <- bind_rows(season_standings)
   real_standings <- real_standings %>%
     arrange(desc(Pct))
@@ -212,6 +217,7 @@ standing_2017 <- actual_standings()[[1]]
 
 
 ############################################ Actual Regular Season Standings 2017 ################################
+
 
 
 

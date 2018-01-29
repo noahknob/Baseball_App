@@ -145,11 +145,13 @@ sim_standings <- function(num,
   
   team_id <- inner_join(names,team_id,by = "team_name")
   
+
   all_week_stats_n <- all_week_stats %>%
     filter(week != 24,week != 23,week != 22) %>%
     filter(Stat != "Hits / At Bats", Stat != "IP") %>%
     mutate(stat_value = as.numeric(stat_value))
   
+
   for (value in 1:num) {
     team_id <- team_id %>%
       mutate(team_id = sample(1:10))
@@ -172,6 +174,7 @@ sim_standings <- function(num,
         for (x in 1:21) { 
           if (i == "WHIP" | i == "ERA") {
             if (list_df[[j]][[i]][["stat_value"]][x] < list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+
               stat_list[[i]] <- c(stat_list[[i]],list_df[[j]][[i]][["stat_value"]][x])
               wins_df[[1]][[x]] <- 1
               loss_df[[1]][[x]] <- 0
@@ -181,12 +184,14 @@ sim_standings <- function(num,
               loss_df[[1]][[x]] <- 0
             }
             if (list_df[[j]][[i]][["stat_value"]][x] > list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+
               wins_df[[1]][[x]] <- 0
               loss_df[[1]][[x]] <- 1
             }
           }
           else { 
             if (list_df[[j]][[i]][["stat_value"]][x] > list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+
               stat_list[[i]] <- c(stat_list[[i]],list_df[[j]][[i]][["stat_value"]][x])
               wins_df[[1]][[x]] <- 1
               loss_df[[1]][[x]] <- 0
@@ -196,6 +201,7 @@ sim_standings <- function(num,
               loss_df[[1]][[x]] <- 0
             }
             if (list_df[[j]][[i]][["stat_value"]][x] < list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+
               wins_df[[1]][[x]] <- 0
               loss_df[[1]][[x]] <- 1
             }
@@ -216,6 +222,7 @@ sim_standings <- function(num,
   
   return(standings_stats)
 }
+
 
 
 y <- sim_standings(500)

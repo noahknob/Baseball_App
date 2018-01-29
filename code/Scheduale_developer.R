@@ -44,6 +44,7 @@ li
 recursive.factorial <- function(x) {
   if (x == 0)    return(1)
   else           return(x * recursive.factorial(x - 1))
+
 }
 
 
@@ -60,6 +61,7 @@ recurssive.matchup <- function(team_id=1:10, matchup = matrix(0,length(team_id),
     matchup[team_id[1],1] <- team_id[2]
     matchup[team_id[2],1] <- team_id[1]
     return(matchup)
+
   }
   else {
     match <- sort(sample(team_id,2,replace = FALSE))
@@ -67,78 +69,3 @@ recurssive.matchup <- function(team_id=1:10, matchup = matrix(0,length(team_id),
     matchup[match[1],1] <- match[2]
     matchup[match[2],1] <- match[1]
     team_id <- team_id[!team_id %in% match]
-    return(recurssive.matchup(team_id,matchup))
-  }
-}
-row_col <- list(1:10,1:9)
-matchup_test = matrix(0,10,ncol = 9,dimnames = row_col)
-
-
-week_vec = 1
-
-recurssive.matchup <- function(team_id = 1:10, matchup = matrix(0,length(team_id),9,dimnames = row_col), week_vec = 1) {
-
-  if (length(week_vec) == 1) {
-    if (length(team_id) == 2) {
-      matchup[team_id[1],length(week_vec)] <- team_id[2]
-      matchup[team_id[2],length(week_vec)] <- team_id[1]
-      team_id <- 1:10
-      return(recurssive.matchup(team_id,matchup,week_vec = 1:(length(week_vec) + 1)))
-    }
-    else {
-      match <- sort(sample(team_id,2,replace = FALSE))
-
-      matchup[match[1],length(week_vec)] <- match[2]
-      matchup[match[2],length(week_vec)] <- match[1]
-      team_id <- team_id[!team_id %in% match]
-      return(recurssive.matchup(team_id,matchup,week_vec))
-    }
-
-  }
-
-  else {
-    team_id <- 1:10
-    flag <- TRUE
-    value <- TRUE
-    while (flag == TRUE) {
-      if (all(matchup[,length(week_vec)] != 0)) {
-        flag <- FALSE
-        value <- FALSE
-      }
-      while (value == TRUE) {
-        if (length(team_id) == 0) {
-          value <- FALSE
-          break
-        }
-
-        match <- sort(sample(team_id,2,replace = FALSE))
-        if (all(matchup[match[1],1:(length(week_vec) - 1)] != match[2])) {
-          matchup[match[1],length(week_vec)] <- match[2]
-          matchup[match[2],length(week_vec)] <- match[1]
-          team_id <- team_id[!team_id %in% match]
-          if (length(team_id) == 2) {
-            if (any(matchup[team_id[1],] == team_id[2])) {
-              team_id <- sort(c(team_id,match))
-            }
-            else {
-              matchup[match[1],length(week_vec)] <- match[2]
-              matchup[match[2],length(week_vec)] <- match[1]
-              team_id <- team_id[!team_id %in% match]
-            }
-          }
-        }
-      }
-
-
-
-    }
-
-    return(recurssive.matchup(team_id,matchup,week_vec = 1:(length(week_vec) + 1)))
-  }
-
-  if (week_vec == 1:9) {
-    return(matchup)
-  }
-}
-
-scheduale <- recurssive.matchup()
