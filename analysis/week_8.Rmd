@@ -1,0 +1,22 @@
+---
+title: "Week Eight Stats"
+output: 
+  html_document:
+    toc: false
+---
+
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+library(tidyverse)
+library(DT)
+library(dplyr)
+library(workflowr)
+week_stats <- readRDS("/Users/noahknoblauch/Baseball/week_stats.RDS")
+week_eight <- week_stats[[8]] %>% ungroup() %>%
+  select(-week)
+
+```
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+datatable(week_eight,rownames = FALSE)
+```
