@@ -1,0 +1,22 @@
+---
+title: "Week Fourteen Stats"
+output: 
+  html_document:
+    toc: false
+---
+
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+library(tidyverse)
+library(DT)
+library(dplyr)
+library(workflowr)
+week_stats <- readRDS("/Users/noahknoblauch/Baseball/week_stats.RDS")
+week_fourteen <- week_stats[[14]] %>% ungroup() %>%
+  select(-week)
+
+```
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+datatable(week_fourteen,rownames = FALSE)
+```
