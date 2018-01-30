@@ -10,7 +10,11 @@ navbar:
     - text: "About"
       href: about.html
     - text: "Results"
-      href: results.html
+      menu:
+      - text: "Weekly Roto"
+        href: Weekly_Roto.html
+      - text: "Standings"
+        href: standings.html
     - text: "Stats"
       menu:
         - text: "Week 1"
@@ -57,12 +61,14 @@ navbar:
           href: week_21.html
     - text: "Code"
       menu:
-        - text: "Yahoo API"
-          href: Code.html
-        - text: "ROTO Analysis"
-          href: analysis.html
-    - text: "License"
-      href: license.html
+      - text: "Yahoo API"
+        href: Code.html
+      - text: "ROTO Analysis"
+        href: analysis.html
+      - text: "Simulated Standings"
+        href: simulation.html
+      - text: "License"
+        href: license.html
   right:
     - icon: fa-github
       href: https://github.com/jdblischak/workflowr

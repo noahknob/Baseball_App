@@ -1,11 +1,3 @@
-x <- seq(-4, 4, length = 100)
-hx <- dnorm(x)
-
-
-plot(x, hx, type = "l", lty = 2, xlab = "x value",
-     ylab = "Density", main = "Comparison of t Distributions")
-
-
 all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim = "\t",guess_max = 10000)
 
 all_season_stats <- all_week_stats %>%
@@ -30,10 +22,21 @@ season_stats <- all_season_stats %>%
 
 
 write_delim(all_season_stats,"/Users/noahknoblauch/Baseball/all_season_stats.txt",delim = "\t")
+write_delim(season_stats,"/Users/noahknoblauch/Baseball/all_season_stats.txt",delim = "\t")
 
 plot(season_stats[["AVG"]],season_stats[["avgdist"]])
 plot(ecdf(season_stats[["AVG"]]))
 points(season_stats[["AVG"]],pnorm(season_stats[["AVG"]],mean = mean(season_stats[["AVG"]]),sd = sd(season_stats[["AVG"]])),col = "red")
+
+hist(season_stats[["AVG"]])
+
+
+
+
+
+
+
+
 
 
 winning_prob <- function(runs,
