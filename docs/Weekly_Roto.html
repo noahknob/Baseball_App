@@ -11,7 +11,7 @@
 
 
 
-<title>Simulated Season</title>
+<title>Weekly Roto</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -315,136 +315,477 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">Simulated Season</h1>
+<h1 class="title toc-ignore">Weekly Roto</h1>
 
 </div>
 
 
-<p>In a H2H league every team matches up against one other team each week. Certain teams will have easier matchups than others. Throughout a season a team might get lucky and a few weeks and play a few teams that are not having a good week. The certain degree of luck is portayed in the final standings. I wanted to see how the standings would change with different scheduales. I created a simulation that would randomize the scheduale for every team.</p>
-<p>In order to be sure my simulation was working properly I recreated the standings from our league. I discovered the scheduale format that yahoo uses, and used that in my simulation. My simulated standings came out exactly the same as the actual league standings. I then ran the simulation 1000 times, each time randomizing the team ID of each team.</p>
-<p>Within the simulation I saved the winning stat value each week for every stat category for later analysis.</p>
-<pre class="r"><code>library(tidyverse)
-library(dplyr)
-library(knitr)
-library(kableExtra)
-library(htmlTable)
+<p>The results only take stats from week 1 to week 21. Weeks 22, 23, and 24 omitted because those were the playoff weeks, some teams were not paying attention for those weeks.</p>
+<div id="total-weeks-won" class="section level1">
+<h1>Total Weeks Won</h1>
+This Table shows how many weeks each team one through out the season
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Manager
+</th>
+<th style="text-align:right;">
+Weeks Won
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordan
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Matt
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wyatt
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dan
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ryan
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Austin
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Edward
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="weekly-roto-winners" class="section level1">
+<h1>Weekly ROTO Winners</h1>
+<p>Here are the winners of each week with their corresponding ROTO score for that week.</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Manager
+</th>
+<th style="text-align:right;">
+Week
+</th>
+<th style="text-align:right;">
+ROTO
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Ryan
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+70.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wyatt
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+77.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordan
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+69.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Edward
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+77.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+81.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+79.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+79.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dan
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+85.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+78.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wyatt
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+77.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordan
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+67.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+72.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ryan
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+79.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Matt
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+71.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordan
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+74.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordan
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+69.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Austin
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+76.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dan
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+72.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Matt
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+72.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Wyatt
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+77.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Matt
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+80.5
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="summed-weekly-roto-scores" class="section level1">
+<h1>Summed weekly ROTO scores</h1>
+This scoreboard shows the standings if you add up the ROTO points from each team every week. I found this interseting becuase Noah’s team never had the most ROTO points for a single week. But tied for total ROTO over the season.<br />
 
-yahoo_scheduale_func &lt;- function(){
-  value &lt;- c(-1:7)
-  team.scheduale &lt;- matrix(0 , 10 , 9)
-  for (z in 1:9) {
-    for (i in 1:9) {
-      for (j in 1:9) {
-        if (i + value[j] != 0) {
-          if (i == j) {
-            team.scheduale[i,(i + value[j]) %% 9 ] &lt;- 10
-          }
-          else team.scheduale[i,(i + value[j]) %% 9 ] &lt;- j
-        }
-        else next
-
-      }
-    }
-    team.scheduale[10,z] &lt;- (sum(1:10) - sum(team.scheduale[,z]))
-  }
-  team.scheduale[,9] &lt;- 10:1
-  return(team.scheduale)
-
-}
-
-
-full_scheduale &lt;- function() {
-  rep_sched &lt;- matrix(0,10,21)
-  team.scheduale &lt;- yahoo_scheduale_func()
-  for (i in 1:10) {
-    rep_sched[i,] &lt;- rep(team.scheduale[i,], length.out = 21)
-  }
-  return(rep_sched)
-}
-
-yahoo &lt;- full_scheduale()
-
-sim_standings &lt;- function(num,
-                          all_week_stats = read_delim(&quot;/Users/noahknoblauch/Baseball/all_week_stats.txt&quot;,delim = &quot;\t&quot;,guess_max = 10000),
-                          names = read_delim(&quot;/Users/noahknoblauch/Baseball/Team_names.txt&quot;,delim = &quot;\t&quot;),
-                          team_id = read_delim(&quot;/Users/noahknoblauch/Baseball/team_id.txt&quot;,delim = &quot;\t&quot;),
-                          Stats = c(&quot;Runs&quot;,&quot;Runs Batted In&quot;,&quot;Home Runs&quot;,&quot;Stolen Bases&quot;,&quot;AVG&quot;,&quot;Wins&quot;,&quot;Saves&quot;,&quot;Strikeouts&quot;,&quot;ERA&quot;,&quot;WHIP&quot;),
-                          sim_standings = list(),
-                          stat_list = list()) {
-
-  team_id &lt;- inner_join(names,team_id,by = &quot;team_name&quot;)
-
-  all_week_stats_n &lt;- all_week_stats %&gt;%
-    filter(week != 24,week != 23,week != 22) %&gt;%
-    filter(Stat != &quot;Hits / At Bats&quot;, Stat != &quot;IP&quot;) %&gt;%
-    mutate(stat_value = as.numeric(stat_value))
-
-  for (value in 1:num) {
-    team_id &lt;- team_id %&gt;%
-      mutate(team_id = sample(1:10))
-
-    all_week_stats &lt;- inner_join(all_week_stats_n,team_id,by = &quot;real_name&quot;)
-
-    all_team_stats &lt;- split(all_week_stats,all_week_stats$team_id)
-
-    wins_df = data.frame(wins = matrix(0, nrow = 21 , ncol = 1))
-    loss_df = data.frame(loss = matrix(0, nrow = 21 , ncol = 1))
-    season_standings &lt;- list()
-
-    list_df &lt;- list()
-    for (z in 1:10) {
-      list_df[[z]] &lt;- split(all_team_stats[[z]],all_team_stats[[z]]$Stat)
-    }
-
-    for (j in 1:10) {
-      for (i in Stats) {
-        for (x in 1:21) {
-          if (i == &quot;WHIP&quot; | i == &quot;ERA&quot;) {
-            if (list_df[[j]][[i]][[&quot;stat_value&quot;]][x] &lt; list_df[[yahoo[j,x]]][[i]][[&quot;stat_value&quot;]][x]) {
-              stat_list[[i]] &lt;- c(stat_list[[i]],list_df[[j]][[i]][[&quot;stat_value&quot;]][x])
-              wins_df[[1]][[x]] &lt;- 1
-              loss_df[[1]][[x]] &lt;- 0
-            }
-            if (list_df[[j]][[i]][[&quot;stat_value&quot;]][x] == list_df[[yahoo[j,x]]][[i]][[&quot;stat_value&quot;]][x]) {
-              wins_df[[1]][[x]] &lt;- 0
-              loss_df[[1]][[x]] &lt;- 0
-            }
-            if (list_df[[j]][[i]][[&quot;stat_value&quot;]][x] &gt; list_df[[yahoo[j,x]]][[i]][[&quot;stat_value&quot;]][x]) {
-              wins_df[[1]][[x]] &lt;- 0
-              loss_df[[1]][[x]] &lt;- 1
-            }
-          }
-          else {
-            if (list_df[[j]][[i]][[&quot;stat_value&quot;]][x] &gt; list_df[[yahoo[j,x]]][[i]][[&quot;stat_value&quot;]][x]) {
-              stat_list[[i]] &lt;- c(stat_list[[i]],list_df[[j]][[i]][[&quot;stat_value&quot;]][x])
-              wins_df[[1]][[x]] &lt;- 1
-              loss_df[[1]][[x]] &lt;- 0
-            }
-            if (list_df[[j]][[i]][[&quot;stat_value&quot;]][x] == list_df[[yahoo[j,x]]][[i]][[&quot;stat_value&quot;]][x]) {
-              wins_df[[1]][[x]] &lt;- 0
-              loss_df[[1]][[x]] &lt;- 0
-            }
-            if (list_df[[j]][[i]][[&quot;stat_value&quot;]][x] &lt; list_df[[yahoo[j,x]]][[i]][[&quot;stat_value&quot;]][x]) {
-              wins_df[[1]][[x]] &lt;- 0
-              loss_df[[1]][[x]] &lt;- 1
-            }
-          }
-        }
-        list_df[[j]][[i]] &lt;- mutate(list_df[[j]][[i]],wins = wins_df[[&quot;wins&quot;]],losses = loss_df[[&quot;loss&quot;]])
-      }
-      season_standings[[j]] &lt;- bind_rows(list_df[[j]])
-      season_standings[[j]] &lt;- season_standings[[j]] %&gt;%
-        group_by(real_name) %&gt;%
-        summarise(wins = sum(wins),losses = sum(losses),Pct = wins / (wins + losses))
-    }
-    sim_standings[[value]] &lt;- bind_rows(season_standings)
-    sim_standings[[value]] &lt;- sim_standings[[value]] %&gt;%
-      arrange(desc(Pct))
-  }
-  standings_stats &lt;- list(sim_standings,stat_list)
-
-  return(standings_stats)
-}</code></pre>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+Manager
+</th>
+<th style="text-align:right;">
+total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+Josh
+</td>
+<td style="text-align:right;">
+1417.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+Noah
+</td>
+<td style="text-align:right;">
+1417.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+Edward
+</td>
+<td style="text-align:right;">
+1369.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:left;">
+Ryan
+</td>
+<td style="text-align:right;">
+1355.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+Wyatt
+</td>
+<td style="text-align:right;">
+1335.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+Dan
+</td>
+<td style="text-align:right;">
+1324.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+7
+</td>
+<td style="text-align:left;">
+Jordan
+</td>
+<td style="text-align:right;">
+1308.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+8
+</td>
+<td style="text-align:left;">
+Austin
+</td>
+<td style="text-align:right;">
+1244.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9
+</td>
+<td style="text-align:left;">
+Owen
+</td>
+<td style="text-align:right;">
+1224.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+Matt
+</td>
+<td style="text-align:right;">
+1206.0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
 TeX fonts only; see
