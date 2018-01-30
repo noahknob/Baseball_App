@@ -1,8 +1,8 @@
 ---
-title: "Code"
-text: "Yahoo Code"
-href: Code.html
-output: html_document
+title: "Yahoo API Code"
+output: 
+  html_document:
+    toc: false
 ---
 
 
