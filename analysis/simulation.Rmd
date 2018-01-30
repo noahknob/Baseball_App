@@ -5,29 +5,139 @@ output:
     toc: false
 ---
 
-<!-- The file analysis/chunks.R contains chunks that define default settings
-shared across the workflowr files. -->
-```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
-```
 
-<!-- Update knitr chunk options -->
-```{r knitr-opts-chunk, include=FALSE}
-```
+In a H2H league every team matches up against one other team each week. Certain teams will have easier matchups than others.  Throughout a season a team might get lucky and a few weeks and play a few teams that are not having a good week.  The certain degree of luck is portayed in the final standings.  I wanted to see how the standings would change with different scheduales.  I created a simulation that would randomize the scheduale for every team.  
 
-<!-- Insert the date the file was last updated -->
-```{r last-updated, echo=FALSE, results='asis'}
-```
 
-<!-- Insert the code version (Git commit SHA1) if Git repository exists and R
- package git2r is installed -->
-```{r code-version, echo=FALSE, results='asis'}
-```
+In order to be sure my simulation was working properly I recreated the standings from our league.  I discovered the scheduale format that yahoo uses, and used that in my simulation.  My simulated standings came out exactly the same as the actual league standings.  I then ran the simulation 1000 times, each time randomizing the team ID of each team. 
 
-<!-- Add your analysis here -->
+Within the simulation I saved the winning stat value each week for every stat category for later analysis.  
 
-## Session information
 
-<!-- Insert the session information into the document -->
-```{r session-info}
+
+```{r,warning=FALSE,message=FALSE}
+library(tidyverse)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+library(htmlTable)
+
+yahoo_scheduale_func <- function(){
+  value <- c(-1:7)
+  team.scheduale <- matrix(0 , 10 , 9)
+  for (z in 1:9) {
+    for (i in 1:9) {
+      for (j in 1:9) {
+        if (i + value[j] != 0) {
+          if (i == j) {
+            team.scheduale[i,(i + value[j]) %% 9 ] <- 10
+          }
+          else team.scheduale[i,(i + value[j]) %% 9 ] <- j
+        }
+        else next
+
+
+      }
+    }
+    team.scheduale[10,z] <- (sum(1:10) - sum(team.scheduale[,z]))
+  }
+  team.scheduale[,9] <- 10:1
+  return(team.scheduale)
+
+}
+
+
+full_scheduale <- function() {
+  rep_sched <- matrix(0,10,21)
+  team.scheduale <- yahoo_scheduale_func()
+  for (i in 1:10) {
+    rep_sched[i,] <- rep(team.scheduale[i,], length.out = 21)
+  }
+  return(rep_sched)
+}
+
+yahoo <- full_scheduale()
+
+sim_standings <- function(num,
+                          all_week_stats = read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim = "\t",guess_max = 10000),
+                          names = read_delim("/Users/noahknoblauch/Baseball/Team_names.txt",delim = "\t"),
+                          team_id = read_delim("/Users/noahknoblauch/Baseball/team_id.txt",delim = "\t"),
+                          Stats = c("Runs","Runs Batted In","Home Runs","Stolen Bases","AVG","Wins","Saves","Strikeouts","ERA","WHIP"),
+                          sim_standings = list(),
+                          stat_list = list()) {
+
+  team_id <- inner_join(names,team_id,by = "team_name")
+
+  all_week_stats_n <- all_week_stats %>%
+    filter(week != 24,week != 23,week != 22) %>%
+    filter(Stat != "Hits / At Bats", Stat != "IP") %>%
+    mutate(stat_value = as.numeric(stat_value))
+
+  for (value in 1:num) {
+    team_id <- team_id %>%
+      mutate(team_id = sample(1:10))
+
+    all_week_stats <- inner_join(all_week_stats_n,team_id,by = "real_name")
+
+    all_team_stats <- split(all_week_stats,all_week_stats$team_id)
+
+    wins_df = data.frame(wins = matrix(0, nrow = 21 , ncol = 1))
+    loss_df = data.frame(loss = matrix(0, nrow = 21 , ncol = 1))
+    season_standings <- list()
+
+    list_df <- list()
+    for (z in 1:10) {
+      list_df[[z]] <- split(all_team_stats[[z]],all_team_stats[[z]]$Stat)
+    }
+
+    for (j in 1:10) {
+      for (i in Stats) {
+        for (x in 1:21) {
+          if (i == "WHIP" | i == "ERA") {
+            if (list_df[[j]][[i]][["stat_value"]][x] < list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+              stat_list[[i]] <- c(stat_list[[i]],list_df[[j]][[i]][["stat_value"]][x])
+              wins_df[[1]][[x]] <- 1
+              loss_df[[1]][[x]] <- 0
+            }
+            if (list_df[[j]][[i]][["stat_value"]][x] == list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+              wins_df[[1]][[x]] <- 0
+              loss_df[[1]][[x]] <- 0
+            }
+            if (list_df[[j]][[i]][["stat_value"]][x] > list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+              wins_df[[1]][[x]] <- 0
+              loss_df[[1]][[x]] <- 1
+            }
+          }
+          else {
+            if (list_df[[j]][[i]][["stat_value"]][x] > list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+              stat_list[[i]] <- c(stat_list[[i]],list_df[[j]][[i]][["stat_value"]][x])
+              wins_df[[1]][[x]] <- 1
+              loss_df[[1]][[x]] <- 0
+            }
+            if (list_df[[j]][[i]][["stat_value"]][x] == list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+              wins_df[[1]][[x]] <- 0
+              loss_df[[1]][[x]] <- 0
+            }
+            if (list_df[[j]][[i]][["stat_value"]][x] < list_df[[yahoo[j,x]]][[i]][["stat_value"]][x]) {
+              wins_df[[1]][[x]] <- 0
+              loss_df[[1]][[x]] <- 1
+            }
+          }
+        }
+        list_df[[j]][[i]] <- mutate(list_df[[j]][[i]],wins = wins_df[["wins"]],losses = loss_df[["loss"]])
+      }
+      season_standings[[j]] <- bind_rows(list_df[[j]])
+      season_standings[[j]] <- season_standings[[j]] %>%
+        group_by(real_name) %>%
+        summarise(wins = sum(wins),losses = sum(losses),Pct = wins / (wins + losses))
+    }
+    sim_standings[[value]] <- bind_rows(season_standings)
+    sim_standings[[value]] <- sim_standings[[value]] %>%
+      arrange(desc(Pct))
+  }
+  standings_stats <- list(sim_standings,stat_list)
+
+  return(standings_stats)
+}
+
 ```
