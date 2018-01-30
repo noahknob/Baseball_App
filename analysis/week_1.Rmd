@@ -10,6 +10,7 @@ output:
 library(tidyverse)
 library(DT)
 library(dplyr)
+library(workflowr)
 week_stats <- readRDS("/Users/noahknoblauch/Baseball/week_stats.RDS")
 week_one <- week_stats[[1]] %>% ungroup() %>%
   select(-week)

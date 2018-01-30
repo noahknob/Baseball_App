@@ -17,6 +17,44 @@ navbar:
           href: week_1.html
         - text: "Week 2"
           href: week_2.html
+        - text: "Week 3"
+          href: week_3.html
+        - text: "Week 4"
+          href: week_4.html
+        - text: "Week 5"
+          href: week_5.html
+        - text: "Week 6"
+          href: week_6.html
+        - text: "Week 7"
+          href: week_7.html
+        - text: "Week 8"
+          href: week_8.html
+        - text: "Week 9"
+          href: week_9.html
+        - text: "Week 10"
+          href: week_10.html
+        - text: "Week 11"
+          href: week_11.html
+        - text: "Week 12"
+          href: week_12.html
+        - text: "Week 13"
+          href: week_13.html
+        - text: "Week 14"
+          href: week_14.html
+        - text: "Week 15"
+          href: week_15.html
+        - text: "Week 16"
+          href: week_16.html
+        - text: "Week 17"
+          href: week_17.html
+        - text: "Week 18"
+          href: week_18.html
+        - text: "Week 19"
+          href: week_19.html
+        - text: "Week 20"
+          href: week_20.html
+        - text: "Week 21"
+          href: week_21.html
     - text: "Analysis"
       href: analysis.html
     - text: "Code"
