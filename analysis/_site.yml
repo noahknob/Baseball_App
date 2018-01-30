@@ -55,10 +55,12 @@ navbar:
           href: week_20.html
         - text: "Week 21"
           href: week_21.html
-    - text: "Analysis"
-      href: analysis.html
     - text: "Code"
-      href: Code.html
+      menu:
+        - text: "Yahoo API"
+          href: Code.html
+        - text: "ROTO Analysis"
+          href: analysis.html
     - text: "License"
       href: license.html
   right:
