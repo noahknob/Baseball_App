@@ -1,0 +1,60 @@
+---
+title: "Weekly Pitching Stats"
+output: 
+  html_document:
+    toc: false
+---
+```{r, echo = FALSE, warning=FALSE,message=FALSE}
+library(lattice)
+library(tidyverse)
+library(knitr)
+library(dplyr)
+library(psych)
+```
+
+# Pitching Histograms
+
+
+```{r, echo = FALSE,warning=FALSE,message=FALSE}
+season_stats <- read_delim("https://raw.githubusercontent.com/noahknob/Baseball_App/master/data/season_stats.txt",delim = "\t")
+Strikeouts <- season_stats[["Strikeouts"]]
+
+hist(Strikeouts, prob = TRUE, breaks = 30, col = "red" , xlim = c(15,112), main = "Histogram of RBI with Normal Fit" , xlab = "Stat Value")
+curve(dnorm(x, mean(Strikeouts), sd(Strikeouts)), add = TRUE, col = "darkblue", lwd = 2)
+
+```
+
+```{r, echo = FALSE,warning=FALSE,message=FALSE}
+season_stats <- read_delim("https://raw.githubusercontent.com/noahknob/Baseball_App/master/data/season_stats.txt",delim = "\t")
+ERA <- season_stats[["ERA"]]
+
+hist(ERA, prob = TRUE, breaks = 20, col = "red" , xlim = c(1,9), main = "Histogram of Runs with Normal Fit" , xlab = "Stat Value")
+curve(dnorm(x, mean(ERA), sd(ERA)), add = TRUE, col = "darkblue", lwd = 2)
+
+```
+
+```{r, echo = FALSE,warning=FALSE,message=FALSE}
+season_stats <- read_delim("https://raw.githubusercontent.com/noahknob/Baseball_App/master/data/season_stats.txt",delim = "\t")
+WHIP <- season_stats[["WHIP"]]
+
+hist(WHIP, prob = TRUE, breaks = 15, col = "red" , xlim = c(0.7,2), main = "Histogram of of Stolen Bases with Normal Fit" , xlab = "Stat Value")
+curve(dnorm(x, mean(WHIP), sd(WHIP)), add = TRUE, col = "darkblue", lwd = 2)
+
+```
+```{r, echo = FALSE,warning=FALSE,message=FALSE}
+season_stats <- read_delim("https://raw.githubusercontent.com/noahknob/Baseball_App/master/data/season_stats.txt",delim = "\t")
+Wins <- season_stats[["Wins"]]
+
+hist(Wins, prob = TRUE, breaks = 10, col = "red" , xlim = c(0,11), main = "Histogram of Wins with Normal Fit" , xlab = "Stat Value")
+curve(dnorm(x, mean(Wins), sd(Wins)), add = TRUE, col = "darkblue", lwd = 2)
+
+```
+
+```{r, echo = FALSE,warning=FALSE,message=FALSE}
+season_stats <- read_delim("https://raw.githubusercontent.com/noahknob/Baseball_App/master/data/season_stats.txt",delim = "\t")
+Saves <- season_stats[["Saves"]]
+
+hist(Saves, prob = TRUE, breaks = 10, col = "red" , xlim = c(0,11), main = "Histogram of Saves with Normal Fit" , xlab = "Stat Value")
+curve(dnorm(x, mean(Saves), sd(Saves)), add = TRUE, col = "darkblue", lwd = 2)
+
+```
