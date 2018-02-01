@@ -14,7 +14,7 @@ library(psych)
 
 # Pitching Histograms
 
-
+The pitching stats from each week seem to resemble a normal distribution.
 ```{r, echo = FALSE,warning=FALSE,message=FALSE}
 season_stats <- read_delim("https://raw.githubusercontent.com/noahknob/Baseball_App/master/data/season_stats.txt",delim = "\t")
 Strikeouts <- season_stats[["Strikeouts"]]
