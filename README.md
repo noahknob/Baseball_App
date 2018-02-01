@@ -1,4 +1,4 @@
-# Baseball_App
+# Baseball App
 
 
 In Yahoo Fantasy Baseball there are two different types of league formats.  Head to Head and ROTO.  In a H2H league you only compete agianst one other manager each week. And in A ROTO league you compete against the whole league for the entire year.

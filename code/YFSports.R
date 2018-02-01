@@ -170,6 +170,37 @@ pull_daily_stats <- function(player_key,date,config){
 
 }
 
+
+##################################################################################################
+
+pull_stats <- function(player_key,config) {
+  player_stat_url <- paste0(ff_base,"/player/",player_key,"/stats")
+  player_res <- GET(player_stat_url,config)
+  player_stat_xml <- read_xml(as.character(player_res)) %>% xml_ns_strip() %>%  xml_find_all("//stat")  %>% map_df(~data_frame(
+    stat_id=xml_text(xml_find_all(.x,"stat_id")),
+    stat_value=xml_text(xml_find_all(.x,"value")),
+    player_key = player_key))
+
+  return(player_stat_xml)
+
+}
+#####################################This Chunk of Code makes data frame of season stats for every player used #########
+# full_roster <-  read_delim("/Users/noahknoblauch/Baseball/full_roster.txt",delim = "\t",guess_max = 10000)
+# players_used <- full_roster %>%
+#      distinct(player_key,player)
+#
+# full_stats <- group_by(players_used,player_key) %>% do(pull_stats(.$player_key,config)) %>% ungroup()
+#
+# full_stats <- inner_join(players_used,full_stats, by = "player_key")
+#
+# stat_categories <- read_delim("/Users/noahknoblauch/Baseball/stat_categories.txt",delim = "\t")
+#
+# full_stats <- full_stats %>%
+#   mutate(stat_id = as.integer(stat_id))
+# full_stats <- inner_join(full_stats,stat_categories, by = "stat_id")
+# saveRDS(full_stats,file = "~/Desktop/BaseballApp/Baseball_outline/data/full_stats.RDS")
+###############################################################################################################################
+
 team_df <- pull_team_names(league.key,config)
 write_delim(team_df,"/Users/noahknoblauch/Baseball/team_id.txt",delim="\t")
 
@@ -180,7 +211,7 @@ write_delim(stat_categories,"/Users/noahknoblauch/Baseball/stat_categories.txt",
 weeks <- data_frame(week=1:24)
 weeks <- weeks %>% mutate(c=1)
 team_df <- team_df %>% mutate(c=1)
-team_df <-inner_join(weeks,team_df,by="c")
+team_df <- inner_join(weeks,team_df,by="c")
 
 
 

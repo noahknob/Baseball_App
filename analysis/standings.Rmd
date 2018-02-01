@@ -25,8 +25,6 @@ real_standings %>%
 ```
 
 
-# Regular Season ROTO Standings
-
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 library(tidyverse)
 all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim = "\t",guess_max = 10000)

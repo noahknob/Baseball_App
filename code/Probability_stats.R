@@ -31,9 +31,29 @@ points(season_stats[["AVG"]],pnorm(season_stats[["AVG"]],mean = mean(season_stat
 hist(season_stats[["AVG"]])
 
 
+hist(season_stats[["HR"]], prob=TRUE, breaks=20)
+curve(dnorm(x, mean(season_stats[["HR"]]), sd(season_stats[["HR"]])), add=TRUE, col="darkblue", lwd=2)
+
+set.seed(3000)
+xseq<-seq(-4,4,.01)
+densities<-dnorm(xseq, 0,1)
+cumulative<-pnorm(xseq, 0, 1)
+randomdeviates<-rnorm(1000,0,1)
+
+par(mfrow=c(1,3), mar=c(3,4,4,2))
+
+plot(xseq, densities, col="darkgreen",xlab="", ylab="Density", type="l",lwd=2, cex=2, main="PDF of Standard Normal")
 
 
+set.seed(3000)
+xseq<-season_stats[["Runs"]]
+densities<-dnorm(season_stats[["Runs"]],mean = mean(season_stats[["Runs"]]),sd = sd(season_stats[["Runs"]]))
+cumulative<-pnorm(xseq, 0, 1)
+randomdeviates<-rnorm(1000,0,1)
 
+par(mfrow=c(1,3), mar=c(3,4,4,2))
+
+plot(xseq, densities)
 
 
 
@@ -86,7 +106,8 @@ df <- all_season_stats %>%
 
 winning_percentage_probability <- df %>%
   select(-avg,-sd) %>% ungroup() %>%
-  group_by(real_name) %>% summarise(winning.prob = mean(prob))
+  group_by(real_name) %>% summarise(winning.prob = mean(prob)) %>%
+  arrange(desc(winning.prob))
 
 
 value <- 1
@@ -94,10 +115,8 @@ test <- new.function("Noah")
 #noah_probaility <- winning_prob(33.7,9.8,)
 probability_winning[[1]]
 
-Noah <-  all_season_stats %>%
-  filter(real_name == "Noah") %>%
-  group_by(Stat) %>%
-  summarise(avg = mean(stat_value))
+Noah <-  df %>%
+  filter(real_name == "Noah")
 
 Noah[Stat == "Runs"]["avg"]
 

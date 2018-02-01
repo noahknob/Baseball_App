@@ -15,6 +15,12 @@ navbar:
         href: Weekly_Roto.html
       - text: "Standings"
         href: standings.html
+    - text: "Plots"
+      menu:
+      - text: "Batting Histograms"
+        href: batting_histograms.html
+      - text: "Pitching Histograms"
+        href: pitching_histograms.html
     - text: "Stats"
       menu:
         - text: "Week 1"
@@ -67,8 +73,8 @@ navbar:
         href: analysis.html
       - text: "Simulated Standings"
         href: simulation.html
-      - text: "License"
-        href: license.html
+    - text: "License"
+      href: license.html
   right:
     - icon: fa-github
       href: https://github.com/jdblischak/workflowr
