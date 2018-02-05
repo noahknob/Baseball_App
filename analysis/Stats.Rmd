@@ -7,8 +7,13 @@ output:
 
 # Player Stats
 
-In the link below is a data table of every player's stats from each team each week.
+The link below leads to a data table of every player's stats from each team each week.
 
 https://noahknob.shinyapps.io/roster_stats/
 
 
+# Weekly Stats
+
+The link below leads to a data table of the total weekly stats from each team, along with the Roto scoring from that week. 
+
+https://noahknob.shinyapps.io/weekly_stats/
