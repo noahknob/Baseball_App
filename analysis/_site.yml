@@ -15,14 +15,14 @@ navbar:
         href: Weekly_Roto.html
       - text: "Standings"
         href: standings.html
+    - text: "Stats"
+      href: Stats.html
     - text: "Plots"
       menu:
       - text: "Batting Histograms"
         href: batting_histograms.html
       - text: "Pitching Histograms"
         href: pitching_histograms.html
-    - text: "Stats"
-      href: Stats.html
     - text: "Code"
       menu:
       - text: "Yahoo API"
