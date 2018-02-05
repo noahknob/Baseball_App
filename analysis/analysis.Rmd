@@ -11,7 +11,7 @@ For categories like ERA and WHIP the most ROTO points are allocated to the team 
 
 ```{r,warning=FALSE,message=FALSE}
 library(tidyverse)
-all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t",guess_max=10000)
+all_week_stats <- read_delim("/Users/noahknoblauch/Dropbox/Baseball/all_week_stats.txt",delim="\t",guess_max=10000)
 
 all_stats_hits_innings <- all_week_stats
 

@@ -14,7 +14,7 @@ library(htmlTable)
 
 
 
-all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t",guess_max=10000)
+all_week_stats <- read_delim("/Users/noahknoblauch/Dropbox/Baseball/all_week_stats.txt",delim="\t",guess_max=10000)
 
 all_week_stats <- all_week_stats %>%
   filter(Stat != "Hits / At Bats", Stat != "IP")%>%
@@ -61,7 +61,7 @@ winner_total %>%
 
 # 2017 standings H2H format
 ```{r,echo=FALSE,warning = FALSE,message=FALSE}
-real_standings <- read_delim("/Users/noahknoblauch/Baseball/real_standings.txt",delim = "\t")
+real_standings <- read_delim("/Users/noahknoblauch/Dropbox/Baseball/real_standings.txt",delim = "\t")
 real_standings %>% 
   kable("html",row.names = TRUE) %>%
   kable_styling(full_width = FALSE)
@@ -71,7 +71,7 @@ real_standings %>%
 
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 library(tidyverse)
-all_week_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_stats.txt",delim="\t",guess_max=10000)
+all_week_stats <- read_delim("/Users/noahknoblauch/Dropbox/Baseball/all_week_stats.txt",delim="\t",guess_max=10000)
 
 all_stats_hits_innings <- all_week_stats
 
