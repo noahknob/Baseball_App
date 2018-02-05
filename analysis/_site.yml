@@ -22,7 +22,7 @@ navbar:
       - text: "Pitching Histograms"
         href: pitching_histograms.html
     - text: "Stats"
-      href: Stat.html
+      href: Stats.html
     - text: "Code"
       menu:
       - text: "Yahoo API"
