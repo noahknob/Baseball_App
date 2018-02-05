@@ -58,3 +58,14 @@ hist(Saves, prob = TRUE, breaks = 10, col = "red" , xlim = c(0,11), main = "Hist
 curve(dnorm(x, mean(Saves), sd(Saves)), add = TRUE, col = "darkblue", lwd = 2)
 
 ```
+
+
+
+
+
+```{r,message=FALSE}
+library(rsconnect)
+
+rsconnect::deployApp()
+
+```

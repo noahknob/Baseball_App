@@ -1,6 +1,7 @@
 library(dplyr)
+library(tidyverse)
 
-all_week_player_stats <- read_delim("/Users/noahknoblauch/Baseball/all_week_player_stats.txt",delim  =  "\t")
+all_week_player_stats <- read_delim("/Users/noahknoblauch/DropBox/Baseball/all_week_player_stats.txt",delim  =  "\t")
 
 
 season_stats <- all_week_player_stats %>%

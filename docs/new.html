@@ -11,7 +11,7 @@
 
 
 
-<title>R Markdown</title>
+<title></title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -158,7 +158,7 @@ $(document).ready(function () {
 <!-- tabsets -->
 <script>
 $(document).ready(function () {
-  window.buildTabsets("TOC");
+  window.buildTabsets("section-TOC");
 });
 </script>
 
@@ -190,17 +190,17 @@ $(document).ready(function ()  {
     options.smoothScroll = true;
 
     // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
+    var toc = $("#section-TOC").tocify(options).data("toc-tocify");
 });
 </script>
 
 <style type="text/css">
 
-#TOC {
+#section-TOC {
   margin: 25px 0px 20px 0px;
 }
 @media (max-width: 768px) {
-#TOC {
+#section-TOC {
   position: relative;
   width: 100%;
 }
@@ -255,7 +255,7 @@ div.tocify {
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
 <div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
+<div id="section-TOC" class="tocify">
 </div>
 </div>
 
@@ -424,28 +424,22 @@ div.section {
 }
 </style>
 
-<div class="fluid-row" id="header">
+<div class="fluid-row" id="section-header">
 
 
 
-<h1 class="title toc-ignore">R Markdown</h1>
 
 </div>
 
 
-<p>This is an R Markdown document. Markdown is a simple formatting syntax which allows you to author HTML, PDF, and MS Word documents. For more details on how to use R Markdown, see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
-<p>You can also embed plots:</p>
-<p><img src="new_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+<div id="section-old-faithful" class="section level2">
+<h2>Old Faithful</h2>
+<p>Old faithful tends to erupt at regular intervals (hence its name). But how regular are these intervals?</p>
+<p>I went to Yellowstone national park and monitored the old faithful geyser during fourteen days. During this time I wrote down the exact number of minutes that passed between each eruption.</p>
+<p>Just kidding, I used the <code>faithful</code> data set which comes with R. It contains the same information. Below is a histogram of the results. As you can see the times are bimodal. Old faithful is not entirely faithful; it appears to have a mistress on the side.</p>
+<pre><code>## Loading required package: shiny</code></pre>
+<iframe data-deferred-src="appd172dfc2b076fc3eff717b14a63dd36c/?w=&amp;__subapp__=1" width="100%" height="400" class="shiny-frame shiny-frame-deferred"></iframe>
+</div>
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
 TeX fonts only; see

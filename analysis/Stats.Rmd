@@ -1,0 +1,14 @@
+---
+title: "Weekly Pitching Stats"
+output: 
+  html_document:
+    toc: false
+---
+
+# Player Stats
+
+In the link below is a data table of every player's stats from each team each week.
+
+https://noahknob.shinyapps.io/roster_stats/
+
+

@@ -1,0 +1,10 @@
+name: roster_stats
+title:
+username:
+account: noahknob
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 273190
+bundleId: 1208843
+url: https://noahknob.shinyapps.io/roster_stats/
+when: 1517862423.5821

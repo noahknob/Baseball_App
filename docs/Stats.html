@@ -335,89 +335,10 @@ div.section {
 </div>
 
 
-<div id="pitching-histograms" class="section level1">
-<h1>Pitching Histograms</h1>
-<p>The pitching stats from each week seem to resemble a normal distribution. <img src="pitching_histograms_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p><img src="pitching_histograms_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p><img src="pitching_histograms_files/figure-html/unnamed-chunk-4-1.png" width="672" /> <img src="pitching_histograms_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p><img src="pitching_histograms_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<pre class="r"><code>library(rsconnect)
-
-rsconnect::deployApp()</code></pre>
-<pre><code>## Preparing to deploy application...DONE
-## Uploading bundle for application: 273139...</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file1183550bc8e0&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file118378b115be&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11835a56a639&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11836ebb1684&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11837bbdfbc8&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file1183125c315d&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file118362acda15&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11834221cb4f&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file118338aad174&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file1183569d33bc&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11836aafa810&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11833242e928&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file118346d95adf&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file118367dd0acf&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file118360f0d14e&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file1183623d899a&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file118336150fd9&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file118320c38b4c&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11835ee3b62&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11835b7ca1f8&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file1183536dcfb4&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11834e5f5d36&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file118356e0ac6c&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file118338581303&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11831e4846db&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11831b23e365&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file1183512609ce&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file1183184ddd01&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11831fe8791e&#39;.</code></pre>
-<pre><code>## Warning in fileDependencies.R(tempfile): No file at path &#39;/var/folders/09/
-## jrc4hwx92w91t3_4hxt59ggw0000gp/T//RtmpQCJw28/file11835767b0ef&#39;.</code></pre>
-<pre><code>## DONE
-## Deploying bundle: 1208453 for application: 273139 ...
-## Waiting for task: 507900369
-##   building: Parsing manifest
-##   building: Building image: 1213538
-##   building: Installing packages
-##   building: Installing files
-##   building: Pushing image: 1213538
-##   deploying: Starting instances
-##   rollforward: Activating new instances
-##   terminating: Stopping old instances
-## Application successfully deployed to https://noahknob.shinyapps.io/analysis/</code></pre>
+<div id="player-stats" class="section level1">
+<h1>Player Stats</h1>
+<p>In the link below is a data table of every player’s stats from each team each week.</p>
+<p><a href="https://noahknob.shinyapps.io/roster_stats/" class="uri">https://noahknob.shinyapps.io/roster_stats/</a></p>
 </div>
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
