@@ -17,6 +17,8 @@ navbar:
         href: standings.html
     - text: "Stats"
       href: Stats.html
+    - text: "Roster App"
+      href: roster_compile.html
     - text: "Plots"
       menu:
       - text: "Batting Histograms"
