@@ -1,0 +1,11 @@
+---
+title: "Compile Roster App"
+output: 
+  html_document:
+    toc: false
+---
+# Roster App
+
+The link below will take you to an app, I made, where you can create a fantasy baseball roster.  The app will tell you the average stats of the team you input.  The averages are based off of 2017 stats.   
+
+https://noahknob.shinyapps.io/full_roster_compile/
