@@ -11,18 +11,8 @@ I like the H2H league because it keeps you excited week in and week out because 
 
 The ROTO league is nice because it shows whose team accumulated the most stats, however it is hard to stay excited for the whole year.
 
+My idea is to create a weekly ROTO league in which the entire league faces off each week.  It is the same scoring as ROTO except that after each week the stats reset.  
 
-My idea is to create a weekly ROTO league where each week the entire league face off.  It is the same scoring as ROTO except that after each week the stats reset.  
-
-
-
-The Results can be found here [Results](results.html)
-
-The code for gathering data from Yahoo is explined here [Code](Code.html)
-
-The code for all the analysis can be found here [analysis](analysis.html)
-
-The stats from every week can be found here [Week_Stats](Week_One.html)
 
 
 
