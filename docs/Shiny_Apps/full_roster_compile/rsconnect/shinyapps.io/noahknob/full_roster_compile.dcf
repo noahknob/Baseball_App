@@ -1,0 +1,10 @@
+name: full_roster_compile
+title:
+username:
+account: noahknob
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 275269
+bundleId: 1215521
+url: https://noahknob.shinyapps.io/full_roster_compile/
+when: 1518197601.30848

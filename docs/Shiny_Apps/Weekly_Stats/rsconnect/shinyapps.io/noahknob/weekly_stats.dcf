@@ -1,0 +1,10 @@
+name: weekly_stats
+title:
+username:
+account: noahknob
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 273365
+bundleId: 1208885
+url: https://noahknob.shinyapps.io/weekly_stats/
+when: 1517864475.6045
