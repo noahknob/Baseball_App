@@ -4,7 +4,7 @@ library(tidyverse)
 
 server <- function(input, output, session) {
   avg_pitcher_stats <- read_delim("https://raw.githubusercontent.com/noahknob/Baseball_App/master/data/avg_pitcher_stats.txt", delim = "\t")
-  avg_batter_stats <- read_delim("https://raw.githubusercontent.com/noahknob/Baseball_App/master/data/avg_batter_stats.txt",delim = "\t")
+  avg_batter_stats <- read_delim("https://raw.githubusercontent.com/noahknob/Baseball_App/master/data/avg_projected.txt",delim = "\t")
   season_stats <- read_delim("https://raw.githubusercontent.com/noahknob/Baseball_App/master/data/season_stats.txt", delim = "\t")
   avg_batter_stats <- avg_batter_stats %>%
     mutate_if(is.double,round,digits = 2)
