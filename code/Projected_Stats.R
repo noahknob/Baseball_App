@@ -25,4 +25,7 @@ avg_projected <- avg_test %>%
 avg_projected <- avg_projected %>%
   mutate_if(is.double,round,digits = 3)
 
-write_delim(avg_projected,"/Users/noahknoblauch/Dropbox/Baseball/avg_projected_2018.txt",delim = "\t")
+saveRDS(avg_projected,"/Users/noahknoblauch/Dropbox/BaseballApp/Baseball_outline/data/avg_projected.RDS")
+
+
+write_delim(avg_projected,"/Users/noahknoblauch/Dropbox/BaseballApp/Baseball_outline/data/avg_projected.txt",delim = "\t")
