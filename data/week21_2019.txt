@@ -1,0 +1,11 @@
+team_name	Roto	AVG	ERA	HR	K	QS	R	RBI	SB	SV	W	WHIP	XBH
+#24 From Adalbertos	99	0.315	4.26	13	86	4	43	44	7	6	6	1.08	30
+TheColossus of Clout	81.5	0.306	2.17	10	67	5	41	32	2	1	8	0.97	30
+Matt Boyd	76.5	0.31	4.39	19	47	2	48	42	4	6	2	1.44	33
+I love Koch	71	0.31	3.5	13	48	3	43	42	4	0	3	1.17	27
+This League's my ATM	70	0.309	5.45	15	37	1	40	46	5	5	1	1.13	29
+SomethingsWongWithMe	61.5	0.267	4.39	12	75	3	39	24	5	3	7	1.35	26
+Bitch	61	0.262	4.2	9	87	7	36	34	1	0	5	1.19	27
+MrLapara	50.5	0.286	3.53	8	71	5	27	30	1	2	1	1.16	25
+Kike... DoULuvMe?	46.5	0.308	1.5	6	11	0	35	31	1	3	0	1	23
+Griffey Jr	42.5	0.207	4.72	8	60	5	26	22	1	3	5	1.14	15
